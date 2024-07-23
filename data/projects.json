@@ -1,0 +1,14 @@
+{
+  "list": [
+    {
+      "name": "InfoSecHub.io",
+      "url": "https://InfoSecHub.io/",
+      "desc": "Repository for reliable security resources"
+    },
+    {
+      "name": "capstone-cy-team-1.github.io",
+      "url": "https://github.com/capstone-cy-team-1/capstone-cy-team-1.github.io",
+      "desc": "Led the capstone project during my final semester of the master's program, which involved simulating a dependency confusion attack in a real-world organization."
+    }
+  ]
+}
