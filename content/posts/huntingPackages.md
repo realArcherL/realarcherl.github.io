@@ -1,5 +1,5 @@
 ---
-title: (Notes) Hunting on Not so popular packages
+title: (Ongoing) Auditing NPM packages
 date: 2024-06-15 16:56:54
 categories: life
 keywords:
@@ -17,21 +17,20 @@ keywords:
    - Task on this look for functions which are using exec `const {exec} = require('child_process');` something like this in the code, and not sanitizing the input.
 4. [[follow-redirects] Improper Input Validation > 1.15.4](https://security.snyk.io/vuln/SNYK-JS-FOLLOWREDIRECTS-6141137)
    - Task, check which packages are using these vuln(s) and find ways to exploit them
-5.
+5. [[@fedify/fedify]](https://www.npmjs.com/package/@fedify/fedify) This is a [good read on SSRF issue, and how to write a report](https://github.com/dahlia/fedify/security/advisories/GHSA-p9cg-vqcc-grcx)
+
+6. [[pdfjs-dist] CVE-2024-4367 – Arbitrary JavaScript execution in PDF.js ](https://codeanlabs.com/blog/research/cve-2024-4367-arbitrary-js-execution-in-pdf-js/)
+
+7. Based on my RCEs look for `path.join` this leads to path traversal(s)
+8. Read GitHub Advisory for latest [CVEs](https://github.com/advisories)
 
 ## Testing gained knowledge in the wild (or atleast was my original idea)
-
-Picking up a target on NPM. It needs to meet some basic criteria for a novice like me to find issues with it.
-
-- it should be new and in JS/TS
-- it should have at least 100 downloads and more
-- it should be still in active development (or I know the dev)
 
 We can use a resource like this Gist which keeps track of all [1000 most popular npm dependencies ](https://gist.github.com/anvaka/8e8fa57c7ee1350e3491). [Snyk Database to see past vulnerabilities.](https://snyk.io/advisor/npm-package/)
 
 Lets start with the package named [fresh](https://www.npmjs.com/package/fresh)
 
-## [Code Audit of Fresh](https://www.npmjs.com/package/fresh)
+## 1. Code Audit of [Fresh](https://www.npmjs.com/package/fresh)
 
 Putting on the song named [Can't See You](https://www.youtube.com/watch?v=0P3sHqiam5A&list=LL&index=166) because it sounded like the first word is "fresh".
 
@@ -69,7 +68,7 @@ Package put plainly isn't doing much and the max it does is parse the date. If t
 
 Let's see if any popular packages are using `fresh` outdated version and we can exploit them. A query like this in GitHub search [`"fresh": "0.5.0" path:**/*/package.json`](https://github.com/search?q=%22fresh%22%3A+%220.5.0%22+path%3A**%2F*%2Fpackage.json&type=code) provides us with a bunch of results.
 
-## [Code Audit of normalize-url](https://www.npmjs.com/package/normalize-url?activeTab=readme)
+## 2. Code Audit of [normalize-url](https://www.npmjs.com/package/normalize-url?activeTab=readme)
 
 Weekly downloads: 26M downloads/week
 [Source Code](https://github.com/sindresorhus/normalize-url#readme)
@@ -85,7 +84,7 @@ Version `>=6.0.0 <6.0.1` vulnerable to ReDos. Trying to see if I can do it as we
 
 Good test case written by the dev to check for this vuln in the code. Check the PR mentioned.
 
-## [Code Audit of follow-redirects](https://www.npmjs.com/package/follow-redirects?activeTab=readme)
+## 3. Code Audit of [follow-redirects](https://www.npmjs.com/package/follow-redirects?activeTab=readme)
 
 Weekly downloads: 38M
 [Source code](https://github.com/follow-redirects/follow-redirects)
@@ -110,7 +109,7 @@ Given the number of issues that have been on information exposure and input vali
 removeMatchingHeaders(/^(?:authorization|cookie)$/i, this._options.headers)
 ```
 
-## [Code Audit of wireguard-rest](https://www.npmjs.com/package/wireguard-rest)
+## 4. Code Audit of [wireguard-rest](https://www.npmjs.com/package/wireguard-rest)
 
 Weekly download: 0
 No Snyk advisory
@@ -139,7 +138,7 @@ How was this identified? Looked at the dependents of the original package, and t
 
 Didn't see a lot of packages using wireguard-rest, reported to the author irrespective. and requested a CVE from Snyk. GIST: https://gist.github.com/realArcherL/d2a2610c93bef820ddb68198fd48fd4f
 
-## [Code Audit of osenv](https://www.npmjs.com/package/wireguard-rest)
+## 5. [Code Audit of osenv](https://www.npmjs.com/package/wireguard-rest)
 
 Weekly download: 3M (even though deprecated)
 
@@ -196,7 +195,7 @@ memo("user_controlled_function", () => null, userInput)
 
 This would execute the user command and we would have a RCE. SUCH IS NOT the case luckily :)
 
-## [Code Audit of @jmondi/url-to-png](https://www.npmjs.com/package/@jmondi/url-to-png)
+## 6. Code Audit of [@jmondi/url-to-png](https://www.npmjs.com/package/@jmondi/url-to-png)
 
 Weekly download: 5
 
@@ -213,10 +212,32 @@ Submitted it as an advisory [here](https://github.com/jasonraimondi/url-to-png/s
 
 While working on it, however I found an almost path traversal bug. More on it [here](https://github.com/jasonraimondi/url-to-png/security/advisories/GHSA-vvmv-wrvp-9gjr). [CVE-2024-39918](https://nvd.nist.gov/vuln/detail/CVE-2024-39918)
 
+This has now sparked a challenge and a research opportunity. I will be writing more on these findings in a separate blog.
+
 #### Too Challenging
 
 1. [pretty-error](https://security.snyk.io/package/npm/sanitize-html): has potential for vulns, is in constant development.
 
-### Potential Candidates
+# Potential Audit Packages
 
-1. [@jmondi/url-to-png](https://www.npmjs.com/package/@jmondi/url-to-png)
+These are the ones which I will review later, after using them for a while. :)
+
+## 1. Code Audit of [hfs](https://www.npmjs.com/package/hfs)
+
+Weekly downloads: 264
+GitHub Stars: 1.9k
+
+The code seems fairly popular and recently command injection was reported [Snyk Advisory](https://security.snyk.io/vuln/SNYK-JS-HFS-7430254). Apparently the [CVE-2024-39943](https://www.cve.org/CVERecord?id=CVE-2024-39943) has more information than the advisory lol.
+
+The fix implemented [here](https://github.com/rejetto/hfs/compare/v0.52.9...v0.52.10?diff=split&w=):
+
+```diff
+- const out = try_(() => execSync(`df -k "${path}"`).toString(),
++ const out = try_(() => spawnSync('df', ['-k', path]).stdout.toString(),
+```
+
+## 2. Code Audit of [Flowise](https://www.npmjs.com/package/flowise)
+
+A lot of issues were found using CodeQL by GitHub Security Labs staff member. You can read about the CVEs [here](https://securitylab.github.com/advisories/GHSL-2023-232_GHSL-2023-234_Flowise/)
+
+## 3. Audit [nocodb](https://github.com/nocodb/nocodb)
