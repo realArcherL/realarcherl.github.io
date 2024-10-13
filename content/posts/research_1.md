@@ -139,7 +139,7 @@ Quick Links: (<a target = "_blank" rel = "nofollow noopener noreferrer" href="ht
 1. **Issue**: The CRM application allowed unauthenticated users to browse files from the `/public` endpoint. Due to missing sanitization on the subPath variable, an attacker can exploit the endpoint to read any arbitrary file from the server. <mark><a target = "_blank" rel = "nofollow noopener noreferrer" href="https://github.com/idurar/idurar-erp-crm/commit/7b1d935c5b316ec3c6056e03b93d922c6d814c7b#diff-f092dc031d7bcdc910362d69bda59417e1344550011b9cf3b84bbb5760b8ebbcR1">
    Commit:7b1d935c5b316ec3c6056e03b93d922c6d814c7b
    </a></mark> introduced the issue.
-2. **POC**: Here's the <a target = "_blank" rel = "nofollow noopener noreferrer" href="">Loom</a> of us reproducing the issue.
+2. **POC**: Here's the <a target = "_blank" rel = "nofollow noopener noreferrer" href="https://github.com/idurar/idurar-erp-crm/security/advisories/GHSA-948g-2vm7-mfv7">POC</a>) for the issue.
 3. **Fix**: The fix commit involved adding a filter for the `subPath` variable<mark><a target = "_blank" rel = "nofollow noopener noreferrer" href="https://github.com/idurar/idurar-erp-crm/commit/0d623e1753a40442571954053de9fbb5072a8417">
    Commit:0d623e1753a40442571954053de9fbb5072a8417
    </a></mark>.
