@@ -6,7 +6,7 @@ keywords:
   - CVE-2024-39919
 ---
 
-**[This was the winning entry for the CTF](https://x.com/intigriti/status/1645789224002797571)**
+**[This was one of the winning entry for the CTF](https://x.com/intigriti/status/1645789224002797571)**
 
 ![tweet by intigriti](/images/inti_tweet_win.png)
 
