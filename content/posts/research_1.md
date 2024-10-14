@@ -15,7 +15,7 @@ On May 02, 2024 CISA released an advisory on <a target = "_blank" rel = "nofollo
 
 <br>
 
-Me and my **good friend [Kartik](https://www.linkedin.com/in/kartik-sharma-19081998/)** wanted to understand the gravity of this issue, so we started looking for issues in open source projects. The idea was not only to identify issues but also to help developers fix them either by suggesting solutions or raising a PR.
+Me and my **good friend [Kartik](https://www.linkedin.com/in/kartik-sharma-19081998/)** used this as motivation and started looking for issues in open source projects. The idea was not only to identify issues but also to help developers fix them either by suggesting solutions or raising a PR.
 
 ## Preventive measures
 
