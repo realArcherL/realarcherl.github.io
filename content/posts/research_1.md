@@ -1,5 +1,5 @@
 ---
-title: "Midnight CVEs : Uncovering Path Traversal Vulnerabilities in Open Source"
+title: "After Hours CVEs : Uncovering Path Traversal Vulnerabilities in Open Source"
 date: 2024-10-11
 categories: hacking
 keywords:
