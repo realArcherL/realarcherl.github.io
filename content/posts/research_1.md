@@ -146,15 +146,11 @@ Quick Links: (<a target = "_blank" rel = "nofollow noopener noreferrer" href="ht
 
 ## Conclusion
 
-Almost all of these issues happened because the developers used direct user input in the `path.join()` function without sanitizing it. This oversight seems to be the reason for the majority of the security vulnerabilities.
-
-To mitigate these risks, it is crucial to follow security guidelines and best practices. The guidelines shared by the Cybersecurity and Infrastructure Security Agency (CISA) are very helpful in this regard. [Additionally, the Open Web Application Security Project (OWASP)](https://owasp.org/www-community/attacks/Path_Traversal) provides comprehensive resources and valuable insights and recommendations for securing web applications against such attacks.
-
-By adhering to these guidelines and implementing proper input validation and sanitization techniques, developers can significantly reduce the risk of security vulnerabilities in their applications.
+Most of these issues arose from using unsanitized user input in the `path.join()` function, leading to security vulnerabilities. To mitigate these risks, developers should follow security best practices from [CISA](https://www.cisa.gov/resources-tools/resources/secure-design-alert-eliminating-directory-traversal-vulnerabilities-software) and [OWASP](https://owasp.org/www-community/attacks/Path_Traversal), including proper input validation and sanitization, to reduce vulnerabilities in their applications.
 
 ## Closing Remarks
 
-We aimed to understand the severity of the advisory by independently identifying issues and attempting to fix them. Our goal was also to avoid burdening open-source developers. As security engineers, we recognize the need to improve our reporting and remediation of security issues, given that OSS developers are not always sufficiently incentivized to undertake this demanding work. In each case, we discovered a security vulnerability, raised pull requests, and requested the developers to apply for CVEs on our behalf. This approach ensures we do not exaggerate any security issues or create unnecessary alarms for users, avoiding repeats [of similar situations](https://socket.dev/blog/node-ip-maintainer-restores-github-repo-after-archiving-due-to-overblown-cve-rating).
+We aimed to assess the advisory's severity by identifying and fixing issues independently, minimizing the burden on OSS developers. As security engineers, we recognize the need to improve our security reporting and remediation, given developers' limited incentives. **For each vulnerability found, we raised pull requests and asked developers to apply for CVEs**, ensuring we avoid exaggerating or creating unnecessary alarms for users, avoiding repeats [of similar situations](https://socket.dev/blog/node-ip-maintainer-restores-github-repo-after-archiving-due-to-overblown-cve-rating).
 
 I hope you found this useful and educational. Thanks and Happy Hunting :)
 
