@@ -111,6 +111,7 @@ Quick Links: (<a target = "_blank" rel = "nofollow noopener noreferrer" href="ht
    Commit:8b81f0dd7e804859a776c51e09faec9e266af293</a></mark> introduced the issue.
 
 2. **POC**: Here's the <a target = "_blank" rel = "nofollow noopener noreferrer" href="https://www.loom.com/share/6fad860cc48949509d8b952e00b902c4?sid=6036b6f7-217e-4e1d-bbba-237062d69e48">Loom</a> video of me reproducing the issue.
+
 3. **Fix**: Two fixes went here.
    1. First the dev used simple `if` statement to check what the `fileName` started with and ended with. <mark><a target = "_blank" rel = "nofollow noopener noreferrer" href="https://github.com/miroslavpejic85/mirotalksfu/commit/760d01ca71cb1bbb85cef64a61c9784fab7965a0#diff-4c734989f0bc8aa243e7010652fdbce84ec7ef54f2a7f5a598ece3fdf2f65812R664">Commit:760d01ca71cb1bbb85cef64a61c9784fab7965a0</a></mark>. This isn't a foolproof fix and still leaves room for path traversal vulnerabilities. Additionally, the file upload vulnerability still exists.
    2. The second and final fix was to check if the file matched the exact naming pattern defined by the regex. This ensures that even if a file with a `.xyz` extension is uploaded, it is saved with a `.webm` extension, else rejected.
@@ -125,7 +126,9 @@ Quick Links: (<a target = "_blank" rel = "nofollow noopener noreferrer" href="ht
 Quick Links: [NIST](https://nvd.nist.gov/vuln/detail/CVE-2024-43797), [POC](https://github.com/advplyr/audiobookshelf/security/advisories/GHSA-gg56-vj58-g5mc)
 
 1. **Issue**: The web app allowed admins to store libraries, including various file types like .txt and .pdf, anywhere in the server's filesystem. However, this feature was intended only for admin users. We discovered an issue where non-admin users could exploit the endpoint to create arbitrary directories on the server. While not a traditional Path Traversal vulnerability, the impact was equivalent due to a Role-Based Access Control (RBAC) flaw. <mark>[Commit(s)](https://github.com/advplyr/audiobookshelf/blame/1c0d6e9c670ebb1b6f1e427a4c4d9250a7fb9b80/server/controllers/LibraryController.js#L43-L47) which introduced the issue
+
 2. **POC**: Here's a [Loom](https://www.loom.com/share/58f28fa857e44807857f19987ef1d696) video of us reproducing the issue.
+
 3. **Fix**: The fix involved adding a check for the admin permissions in the code.<mark>[Commit:8774e6be718147759cf33412c896568f4eb892c2](https://github.com/advplyr/audiobookshelf/commit/8774e6be718147759cf33412c896568f4eb892c2#diff-be3115873d7a28337a5682906c03181181f94f7944877156f7279c75d00b9ccdR44-R46)</mark> which fixed the issue
 
 ### 4. CVE-2024-47769
@@ -139,7 +142,9 @@ Quick Links: (<a target = "_blank" rel = "nofollow noopener noreferrer" href="ht
 1. **Issue**: The CRM application allowed unauthenticated users to browse files from the `/public` endpoint. Due to missing sanitization on the subPath variable, an attacker can exploit the endpoint to read any arbitrary file from the server. <mark><a target = "_blank" rel = "nofollow noopener noreferrer" href="https://github.com/idurar/idurar-erp-crm/commit/7b1d935c5b316ec3c6056e03b93d922c6d814c7b#diff-f092dc031d7bcdc910362d69bda59417e1344550011b9cf3b84bbb5760b8ebbcR1">
    Commit:7b1d935c5b316ec3c6056e03b93d922c6d814c7b
    </a></mark> introduced the issue.
+
 2. **POC**: Here's the <a target = "_blank" rel = "nofollow noopener noreferrer" href="https://github.com/idurar/idurar-erp-crm/security/advisories/GHSA-948g-2vm7-mfv7">POC</a> for the issue.
+
 3. **Fix**: The fix commit involved adding a filter for the `subPath` variable<mark><a target = "_blank" rel = "nofollow noopener noreferrer" href="https://github.com/idurar/idurar-erp-crm/commit/0d623e1753a40442571954053de9fbb5072a8417">
    Commit:0d623e1753a40442571954053de9fbb5072a8417
    </a></mark>.
