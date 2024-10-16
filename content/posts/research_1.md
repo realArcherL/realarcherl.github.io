@@ -7,6 +7,10 @@ keywords:
 
 ### TL;DR: We found some path traversal issues in open source projects!
 
+<p style="background-color: #d0e8d0; color: #505050; padding: 20px; border-radius: 5px; font-family: Arial, sans-serif;">
+  As security researchers, our focus should be on addressing vulnerabilities without overwhelming OSS developers. The goal here wasn't just to collect CVEs but to improve security while minimizing the burden on developers.
+</p>
+
 ## Intoduction and Goal
 
 On May 02, 2024 CISA released an advisory on <a target = "_blank" rel = "nofollow noopener noreferrer" href="https://www.cisa.gov/resources-tools/resources/secure-design-alert-eliminating-directory-traversal-vulnerabilities-software">"Secure by Design Alert: Eliminating Directory Traversal Vulnerabilities in Software"</a>.
