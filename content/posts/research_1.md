@@ -7,7 +7,7 @@ keywords:
 
 ### TL;DR: We found some path traversal issues in open source projects!
 
-## Intoduction and Goal
+## Introduction and Goal
 
 On May 02, 2024 CISA released an advisory on <a target = "_blank" rel = "nofollow noopener noreferrer" href="https://www.cisa.gov/resources-tools/resources/secure-design-alert-eliminating-directory-traversal-vulnerabilities-software">"Secure by Design Alert: Eliminating Directory Traversal Vulnerabilities in Software"</a>.
 
