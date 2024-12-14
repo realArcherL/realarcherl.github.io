@@ -61,7 +61,7 @@ weight = 4
   showAllPostsArchive = false # default
 
   # Home page settings
-  description = "These are some of my notes and learnings. Trying to secure one application at a Time. The website uses [cactus hugo them](https://github.com/probberechts/hexo-theme-cactus)."
+  description = "These are some of my notes and learnings. Trying to secure the world, one application at a time. The website uses [cactus hugo them](https://github.com/probberechts/hexo-theme-cactus)."
   mainSection = "posts" # your main section
   showAllPostsOnHomePage = false # default
   postsOnHomePage = 5 # this option will be ignored if showAllPostsOnHomePage is set to true

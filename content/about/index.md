@@ -15,8 +15,8 @@ My bug bounty days are behind me, but I help secure OSS projects now. :)
 
 > All time reputation: `1118 (Ranked 1239)` `Signal: 5.91 (87th percentile)` and `Impact: 25.68 (96th percentile)`
 
-- **Ranked 4**, on HackerOne's (Upcoming Hackers) leader board for 2021 (Q1) ([view stats here](https://hackerone.com/leaderboard/up_and_comers?year=2021&quarter=1))
-- **Ranked 39**, on HackerOne's leader board for 2021 (Q1, India) with an Impact: 32.86 ([view stats here](https://hackerone.com/leaderboard/country?year=2021&quarter=1&country=IN))
+- **Ranked 2**, on HackerOne's (Upcoming Hackers) leader board for 2021 (Q1) ([view stats here](https://hackerone.com/leaderboard/up_and_comers?year=2021&quarter=1))
+- **Ranked 31**, on HackerOne's leader board for 2021 (Q1, India) with an Impact: 32.86 ([view stats here](https://hackerone.com/leaderboard/country?year=2021&quarter=1&country=IN))
 
 ## Collab with Some of the Industry leaders
 
