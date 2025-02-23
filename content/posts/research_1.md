@@ -177,13 +177,13 @@ Quick Links: (<a target = "_blank" rel = "nofollow noopener noreferrer" href="ht
 
 ### 6. CVE-2025-24960
 
-`Base Score:` 6.5 MEDIUM<br>
-`Vector:` CVSS:3.1/AV:N/AC:L/PR:H/UI:N/S:U/C:H/I:H/A:N<br>
+`Base Score:` 8.8 HIGH<br>
+`Vector:` CVSS:3.1/AV:N/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H<br>
 `stars:` 1.3k<br>
 
 Quick Links: (<a target = "_blank" rel = "nofollow noopener noreferrer" href="https://nvd.nist.gov/vuln/detail/CVE-2025-24960">NIST</a>, <a target = "_blank" rel = "nofollow noopener noreferrer" href="https://github.com/CyferShepard/Jellystat/security/advisories/GHSA-6x46-6w9f-ffv6">POC</a>)
 
-1. **Issue**: "Jellystat is a free and open-source statistics app for Jellyfin!" The app had routes for accessing and restoring files that lacked proper sanitization of user input. <mark><a target = "_blank" rel = "nofollow noopener noreferrer" href="https://github.com/CyferShepard/Jellystat/commit/13e186ef7b5828a14ca086823aaa4dc14fa9c054">Commit:13e186ef7b5828a14ca086823aaa4dc14fa9c054
+1. **Issue**: "Jellystat is a free and open-source statistics app for Jellyfin!" The app had routes for accessing and restoring files that lacked proper sanitization of user input. This allowed admin users to read any file and users to delete any file. <mark><a target = "_blank" rel = "nofollow noopener noreferrer" href="https://github.com/CyferShepard/Jellystat/commit/13e186ef7b5828a14ca086823aaa4dc14fa9c054">Commit:13e186ef7b5828a14ca086823aaa4dc14fa9c054
    </a></mark> introduced the issue. Even though we can read any file on the system, the endpoint still requires elevated privileges.
 
 2. **POC**: Here's the <a target = "_blank" rel = "nofollow noopener noreferrer" href="https://github.com/CyferShepard/Jellystat/security/advisories/GHSA-6x46-6w9f-ffv6">POC</a> for the issue.
