@@ -15,7 +15,7 @@ Loading :)
 
 ## 2024
 
-1. Joined Loom.
+1. Joined Loom. (May, 2023)
 
    - Lead the Application Security and BugBounty program (on HackerOne)
    - Wrote the CSP for a product worth $1.5B and 22M users worldwide with zero downtime
