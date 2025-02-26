@@ -9,6 +9,10 @@ I have worked in product security at "Make My Trip" (2021) and AppSec at Tinder 
 
 Also, I completed my Master's in Cybersecurity at Northeastern University (May, 2023)
 
+## 2024 - 2025
+
+Loading :)
+
 ## 2023 - 2024
 
 1. Joined Loom.
@@ -18,6 +22,8 @@ Also, I completed my Master's in Cybersecurity at Northeastern University (May, 
    - [Helped facilitate the successful acquisition of Loom by Atlassian.](https://www.atlassian.com/blog/announcements/atlassian-acquires-loom)
 
    BSide SF talk on Loom's Security Team's journey: [BSidesSF Getting over the finish line: Loom Security Journey](https://bsidessf2024.sched.com/event/1abED)
+
+2. My First CVE: [CVE-2024-39918](https://nvd.nist.gov/vuln/detail/CVE-2024-39918) for which I also wrote the [fix](https://github.com/jasonraimondi/url-to-png/security/advisories/GHSA-vvmv-wrvp-9gjr)
 
 ## 2022-2023
 
@@ -43,4 +49,4 @@ My bug bounty days are behind me, but I help secure OSS projects now. :)
 - **Ranked 2**, on HackerOne's (Upcoming Hackers) leader board for 2021 (Q1) ([view stats here](https://hackerone.com/leaderboard/up_and_comers?year=2021&quarter=1))
 - **Ranked 31**, on HackerOne's leader board for 2021 (Q1, India) with an Impact: 32.86 ([view stats here](https://hackerone.com/leaderboard/country?year=2021&quarter=1&country=IN))
 
-#### If you made it so far, do you want to read my research work? [Path Traversal in OSS](http://localhost:1313/posts/research_1/)
+#### If you made it so far, do you want to read my research work? <u>[Path Traversal issues in OSS](/posts/research_1/)</u>
