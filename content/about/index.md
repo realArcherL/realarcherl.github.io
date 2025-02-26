@@ -9,11 +9,11 @@ I have worked in product security at "Make My Trip" (2021) and AppSec at Tinder 
 
 Also, I completed my Master's in Cybersecurity at Northeastern University (May, 2023)
 
-## 2024 - 2025
+## 2025
 
 Loading :)
 
-## 2023 - 2024
+## 2024
 
 1. Joined Loom.
 
