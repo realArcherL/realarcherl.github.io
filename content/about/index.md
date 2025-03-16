@@ -9,11 +9,7 @@ I have worked in product security at "Make My Trip" (2021) and AppSec at Tinder 
 
 Also, I completed my Master's in Cybersecurity at Northeastern University (May, 2023)
 
-## 2025
-
-Loading :)
-
-## 2024
+## 2024-2025
 
 1. Joined Loom. (May, 2023)
 
@@ -23,7 +19,7 @@ Loading :)
 
    BSide SF talk on Loom's Security Team's journey: [BSidesSF Getting over the finish line: Loom Security Journey](https://bsidessf2024.sched.com/event/1abED)
 
-2. My First CVE: [CVE-2024-39918](https://nvd.nist.gov/vuln/detail/CVE-2024-39918) for which I also wrote the [fix](https://github.com/jasonraimondi/url-to-png/security/advisories/GHSA-vvmv-wrvp-9gjr)
+2. Published my blog: [Hunting Path Traversal in OSS](/posts/research_1/).
 
 ## 2022-2023
 
