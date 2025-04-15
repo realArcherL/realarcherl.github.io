@@ -101,8 +101,7 @@ Quick Links: (<a target = "_blank" rel = "nofollow noopener noreferrer" href="ht
    <mark><a target = "_blank" rel = "nofollow noopener noreferrer" href=" https://github.com/jasonraimondi/url-to-png/commit/8afc00247c1d7e6c7b37356a5f6282b486e596fa#diff-b6976c39b4e50125519d2e908fe8f3c24cece6d69f60a76b255bcac922a8de67R57">
    Commit:8afc00247c1d7e6c7b37356a5f6282b486e596fa</a></mark> introduced the issue.
 
-2. **POC**: Here's the <a target = "_blank" rel = "nofollow noopener noreferrer" href="https://www.loom.com/share/bd7b306cdae7445c97e68f0626e743a6">Loom</a> video POC of me reproducing the issue.
-3. **Fix**: The fix was to remove all the special characters and replace them with a single "-". We didn't go for a fancy fix because we already had a function to do this for us. Fixed in <mark><a target = "_blank" rel = "nofollow noopener noreferrer" href="https://github.com/jasonraimondi/url-to-png/commit/e4eaeca6493b21cd515b582fd6c0af09ede54507">Commit:e4eaeca6493b21cd515b582fd6c0af09ede54507</a></mark>
+2. **Fix**: The fix was to remove all the special characters and replace them with a single "-". We didn't go for a fancy fix because we already had a function to do this for us. Fixed in <mark><a target = "_blank" rel = "nofollow noopener noreferrer" href="https://github.com/jasonraimondi/url-to-png/commit/e4eaeca6493b21cd515b582fd6c0af09ede54507">Commit:e4eaeca6493b21cd515b582fd6c0af09ede54507</a></mark>
 
 ### 2. CVE-2024-XXXXX
 
@@ -116,9 +115,7 @@ Quick Links: (<a target = "_blank" rel = "nofollow noopener noreferrer" href="ht
    <mark><a target = "_blank" rel = "nofollow noopener noreferrer" href="https://github.com/miroslavpejic85/mirotalksfu/commit/8b81f0dd7e804859a776c51e09faec9e266af293#diff-4c734989f0bc8aa243e7010652fdbce84ec7ef54f2a7f5a598ece3fdf2f65812R455-R463">
    Commit:8b81f0dd7e804859a776c51e09faec9e266af293</a></mark> introduced the issue.
 
-2. **POC**: Here's the <a target = "_blank" rel = "nofollow noopener noreferrer" href="https://www.loom.com/share/6fad860cc48949509d8b952e00b902c4?sid=6036b6f7-217e-4e1d-bbba-237062d69e48">Loom</a> video of me reproducing the issue.
-
-3. **Fix**: Two fixes went here.
+2. **Fix**: Two fixes went here.
    1. First the dev used simple `if` statement to check what the `fileName` started with and ended with. <mark><a target = "_blank" rel = "nofollow noopener noreferrer" href="https://github.com/miroslavpejic85/mirotalksfu/commit/760d01ca71cb1bbb85cef64a61c9784fab7965a0#diff-4c734989f0bc8aa243e7010652fdbce84ec7ef54f2a7f5a598ece3fdf2f65812R664">Commit:760d01ca71cb1bbb85cef64a61c9784fab7965a0</a></mark>. This isn't a foolproof fix and still leaves room for path traversal vulnerabilities. Additionally, the file upload vulnerability still exists.
    2. The second and final fix was to check if the file matched the exact naming pattern defined by the regex. This ensures that even if a file with a `.xyz` extension is uploaded, it is saved with a `.webm` extension, else rejected.
       <mark><a target = "_blank" rel = "nofollow noopener noreferrer" href="https://github.com/miroslavpejic85/mirotalksfu/commit/8414e4e108bc721d3ffbb48f87e95485b7650795">Commit:8414e4e108bc721d3ffbb48f87e95485b7650795</a></mark> which fixed the issue. (Note: This alone doesn’t completely eliminate the small possibility of getting a remote shell back, but in the latest versions, the author has added `no-sniff` headers. Additionally, `.webm` files were never actually executed on the server at the time of reporting.)
@@ -133,9 +130,7 @@ Quick Links: [NIST](https://nvd.nist.gov/vuln/detail/CVE-2024-43797), [POC](http
 
 1. **Issue**: The web app allowed admins to store libraries, including various file types like .txt and .pdf, anywhere in the server's filesystem. However, this feature was intended only for admin users. We discovered an issue where non-admin users could exploit the endpoint to create arbitrary directories on the server. While not a traditional Path Traversal vulnerability, the impact was equivalent due to a Role-Based Access Control (RBAC) flaw. <mark>[Commit(s)](https://github.com/advplyr/audiobookshelf/blame/1c0d6e9c670ebb1b6f1e427a4c4d9250a7fb9b80/server/controllers/LibraryController.js#L43-L47) which introduced the issue
 
-2. **POC**: Here's a [Loom](https://www.loom.com/share/58f28fa857e44807857f19987ef1d696) video of us reproducing the issue.
-
-3. **Fix**: The fix involved adding a check for the admin permissions in the code.<mark>[Commit:8774e6be718147759cf33412c896568f4eb892c2](https://github.com/advplyr/audiobookshelf/commit/8774e6be718147759cf33412c896568f4eb892c2#diff-be3115873d7a28337a5682906c03181181f94f7944877156f7279c75d00b9ccdR44-R46)</mark> which fixed the issue
+2. **Fix**: The fix involved adding a check for the admin permissions in the code.<mark>[Commit:8774e6be718147759cf33412c896568f4eb892c2](https://github.com/advplyr/audiobookshelf/commit/8774e6be718147759cf33412c896568f4eb892c2#diff-be3115873d7a28337a5682906c03181181f94f7944877156f7279c75d00b9ccdR44-R46)</mark> which fixed the issue
 
 ### 4. CVE-2024-47769
 
