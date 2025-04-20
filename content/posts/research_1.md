@@ -7,9 +7,9 @@ keywords:
 
 ### TL;DR: I found some path traversal issues in open source projects!
 
-<p style="background-color: #d0e8d0; color: #505050; padding: 20px; border-radius: 5px; font-family: Arial, sans-serif;">
+<!-- <p style="background-color: #d0e8d0; color: #505050; padding: 20px; border-radius: 5px; font-family: Arial, sans-serif;">
 <b>Disclaimer:</b> This research was conducted strictly independent of my employer (excluded from scope). All opinions and views in this article are my own. When citing, please call me an Independent Security Researcher.
-</p>
+</p> -->
 
 ## Introduction and Goal
 
