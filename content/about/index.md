@@ -11,21 +11,23 @@ Also, I completed my Master's in Cybersecurity at Northeastern University (May, 
 
 ## 2024-2025
 
-1. Joined Loom. (May, 2023)
+<b>Loom X Atlassian</b>
 
-   - Lead the Application Security and BugBounty program (on HackerOne)
-   - Wrote the CSP for a product worth $1.5B and 22M users worldwide with zero downtime
-   - [Helped facilitate the successful acquisition of Loom by Atlassian.](https://www.atlassian.com/blog/announcements/atlassian-acquires-loom)
+- [Helped facilitate the successful acquisition of Loom by Atlassian.](https://www.atlassian.com/blog/announcements/atlassian-acquires-loom)
+- BSide SF talk on Loom's Security Team's journey: [BSidesSF Getting over the finish line: Loom Security Journey](https://bsidessf2024.sched.com/event/1abED)
+- Security Engineer II at Atlassian ProdSec Team (April, 2025)
 
-   BSide SF talk on Loom's Security Team's journey: [BSidesSF Getting over the finish line: Loom Security Journey](https://bsidessf2024.sched.com/event/1abED)
-
-2. Published my blog: [Hunting Path Traversal in OSS](/posts/research_1/).
+2. Published my blog: [Hunting Path Traversal in OSS](/posts/research_1/). (Dec, 2024)
+3. Traveling around the US and presenting this research at OWASP Denver, OWASP Boston (2025)
 
 ## 2022-2023
 
 1. Internship with Tinder (Match Group).
 2. Winning Entry for 2023 [Intigriti](https://www.intigriti.com/) Code review [CTF](/posts/intigriti_challenge/)
 3. Completed my MS in Cybersecurity from Northeaster University, Boston.
+4. Joined Loom (May, 2023)
+   - Lead the Application Security and BugBounty program (on HackerOne) a product worth $1.5B and 22M users worldwide
+   - Wrote the Content Security Policy for the web app
 
 ## 2021
 
