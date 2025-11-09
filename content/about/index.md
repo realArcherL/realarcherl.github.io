@@ -3,7 +3,7 @@ title: About me
 date: 2016-08-24 17:51:42
 ---
 
-TL;DR I currently work as an Product Security Engineer at Atlassian ([joined via Loom acquisition](https://www.atlassian.com/blog/announcements/atlassian-acquires-loom))
+TL;DR I currently work as a Product Security Engineer at Atlassian ([joined via Loom acquisition](https://www.atlassian.com/blog/announcements/atlassian-acquires-loom))
 
 Security intern at MakeMyTrip in 2021 and Tinder AppSec in 2022 → Loom in 2023 leading AppSec and bug bounty (no, seriously!). I disclosed vulnerabilities to GitHub, GitLab, Glassdoor, NerdWallet, Bill.com and more during my short lived bug bounty career. Currently retired; the habits persist.
 
