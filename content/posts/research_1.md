@@ -5,11 +5,18 @@ categories: hacking
 keywords:
 ---
 
-### TL;DR: I found some path traversal issues in open source projects!
-
-<!-- <p style="background-color: #d0e8d0; color: #505050; padding: 20px; border-radius: 5px; font-family: Arial, sans-serif;">
+<p style="background-color: #d0e8d0; color: #505050; padding: 20px; border-radius: 5px; font-family: Arial, sans-serif;">
 <b>Disclaimer:</b> This research was conducted strictly independent of my employer (excluded from scope). All opinions and views in this article are my own. When citing, please call me an Independent Security Researcher.
-</p> -->
+</p>
+
+> 2025 Update: This research work resulted in
+>
+> - [7-CVEs](/cve)
+> - [NPM package](https://www.npmjs.com/package/is-path-inside-secure)
+> - [3 talks](/talks) &
+> - [CTF](https://play.secdim.com/game/appsec-village-2025/challenge/slipstreamjs)
+
+TL;DR: I found some path traversal issues in open source projects!
 
 ## Introduction and Goal
 
@@ -21,7 +28,7 @@ On May 02, 2024 CISA released an advisory on <a target = "_blank" rel = "nofollo
 
 I used this as motivation and started looking for issues in open source projects. The idea was not only to identify issues but also to help developers fix them either by suggesting solutions or raising a PR.
 
-Shout out to my **good friend [Kartik](https://www.linkedin.com/in/kartik-sharma-19081998/)** for helping me with [CVE-2024-43797](#3-cve-2024-43797) and [CVE-2024-47769](#4-cve-2024-47769) and helping setup the recon setup.
+Shout out to my **good friend [Kartik](https://www.linkedin.com/in/kartik-sharma-19081998/)** for helping me with [CVE-2024-43797](#3-cve-2024-43797) and [CVE-2024-47769](#4-cve-2024-47769) and helping me with recon setup.
 
 ## Preventive measures
 
@@ -32,7 +39,7 @@ But before we dive in we wanted to cover some of the preventive measures suggest
 
 One great example of this is by [actual-server](https://github.com/actualbudget/actual-server/tree/master): [here](https://github.com/actualbudget/actual-server/blob/b8d2797259f753a08e330c84892c5f8906430205/src/app-sync.js#L283-L305), they have a route called `/download-user-file`.
 
-```js
+```javascript
 app.get('/download-user-file', async (req, res) => {
   let accountDb = getAccountDb();
   let fileId = req.headers['x-actual-file-id'];

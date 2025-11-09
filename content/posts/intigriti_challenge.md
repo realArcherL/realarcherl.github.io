@@ -113,31 +113,30 @@ The first key insights on **Server-Side Code** are:
 
 But most importantly, the note cannot be accessed on both `note/:id` and `debug/<hash>/: id` because of the header `mode: read` requirement.
 
-```javascript!
-app.get("/note/:id", (req, res) => {
+```javascript
+app.get('/note/:id', (req, res) => {
   // TODO: Congifure CORS and setup an allowList
-  let mode = req.headers["mode"];
-  if (mode === "read") {
-    res.setHeader("content-type", "text/plain"); // no xss
-	console.log(getPostByID(req.params.id).note)
-	console.log(req.params.id)
+  let mode = req.headers['mode'];
+  if (mode === 'read') {
+    res.setHeader('content-type', 'text/plain'); // no xss
+    console.log(getPostByID(req.params.id).note);
+    console.log(req.params.id);
     res.send(getPostByID(req.params.id).note);
   } else {
-    return res.render("note", { title: getPostByID(req.params.id).title });
+    return res.render('note', { title: getPostByID(req.params.id).title });
   }
 });
 
 /* snip */
 
-app.get("/debug/sd/:id", (req, res) => {
-  let mode = req.headers["mode"];
-  if (mode === "read") {
+app.get('/debug/sd/:id', (req, res) => {
+  let mode = req.headers['mode'];
+  if (mode === 'read') {
     res.send(getPostByID(req.params.id).note);
   } else {
-    return res.status(404).send("404");
+    return res.status(404).send('404');
   }
 });
-
 ```
 
 **There is also no possibility of triggering an XSS on the `note/:id` and `debug` endpoint because of this code snippet:**

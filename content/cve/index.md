@@ -18,3 +18,5 @@ keywords:
 | [CVE-2024-47769](https://nvd.nist.gov/vuln/detail/CVE-2024-47769) | Path Traversal |        [Idurar CRM](https://github.com/idurar/idurar-erp-crm/)         |   High(7.5)    | [Yes](https://github.com/idurar/idurar-erp-crm/security/advisories/GHSA-948g-2vm7-mfv7)    |
 | [CVE-2024-56198](https://nvd.nist.gov/vuln/detail/CVE-2024-56198) | Path Traversal |     [Path-Sanitizer](https://github.com/cabraviva/path-sanitizer)      | Critical(10.0) | No                                                                                         |
 | [CVE-2025-24960](https://nvd.nist.gov/vuln/detail/CVE-2025-24960) | Path Traversal |         [Jellystat](https://github.com/CyferShepard/Jellystat)         |   High(7.2)    | [Yes](https://github.com/CyferShepard/Jellystat/security/advisories/GHSA-6x46-6w9f-ffv6)   |
+
+All the above CVEs were a result of my research work - [Path Traversal Research](/posts/research_1/).
