@@ -4,7 +4,8 @@ title = "Hi, I am Nishant J."
 theme = "cactus"
 copyright = "Nishant" # cactus will use title if copyright is not set
 disqusShortname = "nshantj"
-googleAnalytics = "G-23LXF8HW7B"
+# commenting out
+# googleAnalytics = "G-23LXF8HW7B"
 
 
 # summaryLength = 2
