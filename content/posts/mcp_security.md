@@ -1,6 +1,6 @@
 ---
 title: Practical Advice on Securing Agentic Applications
-date: 2026-04-29
+date: 2026-03-29
 categories: security
 keywords: mcp
 ---
@@ -80,25 +80,25 @@ If the server had used a package like [is-path-inside-secure](https://www.npmjs.
 
 This is not limited to path traversal. The same principle applies to SSRF, XSS, and other vulnerability classes: use libraries that are secure by construction rather than relying on developers to remember every edge case. For curated lists of such packages, see [tl;dr sec's awesome-secure-defaults](https://github.com/tldrsec/awesome-secure-defaults) and [Liran Tal's awesome-nodejs-security](https://github.com/lirantal/awesome-nodejs-security).
 
-> _BUT isn't supply chain a BIG risk? Yes, but there are ways to defend against it. Use [dependency cooldowns](https://blog.yossarian.net/2025/11/21/We-should-all-be-using-dependency-cooldowns), SCA tools, and similar practices._
+> _BUT isn't supply chain a BIG risk? Yes, but there are ways to defend against it. Use [dependency cooldowns](https://blog.yossarian.net/2025/11/21/We-should-all-be-using-dependency-cooldowns), SCA tools, and similar practices. Also, the idea is to promote secure-by-design and not increase number of dependencies_
 
 Think of this as a filesystem analogue of restrictive privilege, not just least privilege. RBAC constrains access at the identity layer. Capability checks constrain access at the operation and resource layer. The agent <u>**MUST NOT**</u> be trusted with broad access and then told to behave; its access must be shaped in advance by code.
 
 ## When something still looks risky, stop and ask a human
 
 <p style="background-color: #ffffff; color: #2c3e50; padding: 20px; border-radius: 4px; font-family: Arial, sans-serif;">
-<b>Key Idea:</b> The final defense is selective friction: let safe actions stay fast, and make risky actions stop at a human boundary.
+<b>Key Idea:</b> The final defense is selective friction: let safe actions stay fast, and make risky actions stop at a human boundary. HIL based on number of times the tool gets invoked.
 </p>
 
 Human-in-the-loop (HIL) means the agent can plan and propose actions, but a person must approve actions once they cross a risk boundary.
 
-| #   | Protocol / system                                                                           | What it requires                                                                                              | Why it matters                                                            |
-| --- | ------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------- |
-| 1   | [MCP spec](https://modelcontextprotocol.io/specification/2025-11-25/server/tools)           | Clients should show confirmation prompts for sensitive operations and users should be able to deny tool calls | Makes HIL a protocol-level expectation                                    |
-| 2   | [ACP Spec](https://agentcommunicationprotocol.dev/how-to/await-external-response)           | Built-in `Await` mechanism pauses execution until an external response arrives                                | Makes explicit approval and external validation a native protocol pattern |
-| 3   | [A2A Spec](https://a2a-protocol.org/latest/specification/#11-key-goals-of-a2a)              | Task state includes `input-required` so an agent can stop and wait for more input                             | Makes pause-and-resume approval flows part of the protocol itself         |
-| 4   | [OpenAI computer use](https://developers.openai.com/api/docs/guides/tools-computer-use/)    | Keep a human in the loop for high-impact actions                                                              | Real product guidance for agentic systems                                 |
-| 5   | [Anthropic computer use](https://docs.anthropic.com/en/docs/build-with-claude/computer-use) | Ask a human to confirm actions with meaningful real-world consequences or affirmative consent                 | Strong example of HIL in practice                                         |
+| #   | Protocol / system                                                                           | What it requires                                                                                              | Why it matters                            |
+| --- | ------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------- | ----------------------------------------- |
+| 1   | [MCP spec](https://modelcontextprotocol.io/specification/2025-11-25/server/tools)           | Clients should show confirmation prompts for sensitive operations and users should be able to deny tool calls | Makes HIL a protocol-level expectation    |
+| 2   | [ACP Spec](https://agentcommunicationprotocol.dev/how-to/await-external-response)           | Built-in `Await` mechanism pauses execution until an external response arrives                                |                                           |
+| 3   | [A2A Spec](https://a2a-protocol.org/latest/specification/#11-key-goals-of-a2a)              | Task state includes `input-required` so an agent can stop and wait for more input                             |                                           |
+| 4   | [OpenAI computer use](https://developers.openai.com/api/docs/guides/tools-computer-use/)    | Keep a human in the loop for high-impact actions                                                              | Real product guidance for agentic systems |
+| 5   | [Anthropic computer use](https://docs.anthropic.com/en/docs/build-with-claude/computer-use) | Ask a human to confirm actions with meaningful real-world consequences or affirmative consent                 | Strong example of HIL in practice         |
 
 <br></br>
 However, HIL should not be the first answer to every tool call. If you prompt on every read, this creates approval fatigue, and users stop paying attention. A better pattern is to reserve mandatory approval for destructive actions, and apply threshold-based approval for low-risk reads once their frequency becomes unusual.
