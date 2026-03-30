@@ -2,8 +2,7 @@
 title: Intigriti Challenge
 date: 2023-04-11
 categories: life
-keywords:
-  - CVE-2024-39919
+keywords: ctf
 ---
 
 **[This was one of the winning entry for the CTF](https://x.com/intigriti/status/1645789224002797571)**
