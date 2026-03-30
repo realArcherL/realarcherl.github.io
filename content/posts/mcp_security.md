@@ -67,9 +67,9 @@ If the capabilities we provide to the model are secure by default, then even if 
 | #   | Case                                                                                                                             | What went wrong                                                                    | Why it matters                                                                    |
 | --- | -------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------- | --------------------------------------------------------------------------------- |
 | 1   | [Anthropic Filesystem MCP Server path bypass](https://embracethered.com/blog/posts/2025/anthropic-filesystem-mcp-server-bypass/) | Used a naive prefix check, so paths outside the allowed directory could still pass | Shows that simple string checks are not enough for file boundaries                |
-| 2   | [Anthropic Filesystem MCP Server symlink escape](https://cymulate.com/blog/cve-2025-53109-53110-escaperoute-anthropic/)          | Symlinks could be used to escape the allowed directory and reach host files        | Shows why path checks must be symlink aware                                       |
+| 2   | [Anthropic Filesystem MCP Server symlink escape](https://cymulate.com/blog/cve-2025-53109-53110-escaperoute-anthropic/)          | Symlinks could be used to escape the allowed directory and reach host files        | Shows why path checks must be symlink-aware                                       |
 | 3   | [filesystem-mcp path traversal](https://vulnerablemcp.info/vuln/cve-2025-67366-filesystem-mcp-path-traversal.html)               | `../` traversal could break out of the configured root                             | Shows how agent file tools can become arbitrary file access                       |
-| 4   | [mcp-server-git traversal via git_add](https://security.snyk.io/vuln/SNYK-PYTHON-MCPSERVERGIT-15363315)                          | Relative paths let files outside the repo get staged                               | Shows that repo scoped tools also need strict path containment                    |
+| 4   | [mcp-server-git traversal via git_add](https://security.snyk.io/vuln/SNYK-PYTHON-MCPSERVERGIT-15363315)                          | Relative paths let files outside the repo get staged                               | Shows that repo-scoped tools also need strict path containment                    |
 | 5   | [OpenClaw workspace traversal](https://security.snyk.io/vuln/SNYK-JS-OPENCLAW-15627785)                                          | Crafted workspace values let the app reach files outside the intended workspace    | Shows this is not just an MCP problem, agentic apps need the same boundary checks |
 | 6   | [GitHub MCP prompt injection chain](https://www.docker.com/blog/mcp-horror-stories-github-prompt-injection/)                     | Untrusted content pushed the agent to access and leak private data                 | Shows the same pattern beyond local files                                         |
 
@@ -80,14 +80,14 @@ If the server had used a package like [is-path-inside-secure](https://www.npmjs.
 
 This is not limited to path traversal. The same principle applies to SSRF, XSS, and other vulnerability classes: use libraries that are secure by construction rather than relying on developers to remember every edge case. For curated lists of such packages, see [tl;dr sec's awesome-secure-defaults](https://github.com/tldrsec/awesome-secure-defaults) and [Liran Tal's awesome-nodejs-security](https://github.com/lirantal/awesome-nodejs-security).
 
-> _BUT isn't supply chain a BIG risk? Yes, but there are ways to defend against it. Use [dependency cooldowns](https://blog.yossarian.net/2025/11/21/We-should-all-be-using-dependency-cooldowns), SCA tools, and similar practices. Also, the idea is to promote secure-by-design and not increase number of dependencies_
+> _BUT isn't supply chain a BIG risk? Yes, but there are ways to defend against it. Use [dependency cooldowns](https://blog.yossarian.net/2025/11/21/We-should-all-be-using-dependency-cooldowns), SCA tools, and similar practices. Also, the idea is to promote secure-by-design and not increase the number of dependencies._
 
 Think of this as a filesystem analogue of restrictive privilege, not just least privilege. RBAC constrains access at the identity layer. Capability checks constrain access at the operation and resource layer. The agent <u>**MUST NOT**</u> be trusted with broad access and then told to behave; its access must be shaped in advance by code.
 
 ## When something still looks risky, stop and ask a human
 
 <p style="background-color: #ffffff; color: #2c3e50; padding: 20px; border-radius: 4px; font-family: Arial, sans-serif;">
-<b>Key Idea:</b> The final defense is selective friction: let safe actions stay fast, and make risky actions stop at a human boundary. HIL based on number of times the tool gets invoked.
+<b>Key Idea:</b> The final defense is selective friction: let safe actions stay fast, and make risky actions stop at a human boundary. Trigger HIL based on how often a tool gets invoked.
 </p>
 
 Human-in-the-loop (HIL) means the agent can plan and propose actions, but a person must approve actions once they cross a risk boundary.
@@ -101,7 +101,7 @@ Human-in-the-loop (HIL) means the agent can plan and propose actions, but a pers
 | 5   | [Anthropic computer use](https://docs.anthropic.com/en/docs/build-with-claude/computer-use) | Ask a human to confirm actions with meaningful real-world consequences or affirmative consent                 | Strong example of HIL in practice         |
 
 <br></br>
-However, HIL should not be the first answer to every tool call. If you prompt on every read, this creates approval fatigue, and users stop paying attention. A better pattern is to reserve mandatory approval for destructive actions, and apply threshold-based approval for low-risk reads once their frequency becomes unusual.
+However, HIL should not be the first answer to every tool call. If you prompt on every read, you create approval fatigue and users stop paying attention. A better pattern is to reserve mandatory approval for destructive actions and apply threshold-based approval for low-risk reads once their frequency becomes unusual.
 
 | Tool type                              | Default policy | When to require approval                                                   |
 | -------------------------------------- | -------------- | -------------------------------------------------------------------------- |
@@ -116,7 +116,7 @@ The goal is not to remove human oversight. It is to apply it where it still has 
 
 A practical pattern is for the server to track thresholds such as repeated read activity for **THAT** session. When that threshold is exceeded, the server can use MCP [elicitation](https://modelcontextprotocol.io/specification/draft/client/elicitation) to force a client-side approval step before the workflow can continue.
 
-Similarly, provisions in other protocols can also be leveraged to do threshold based HIL.
+Similarly, provisions in other protocols can also be leveraged to implement threshold-based HIL.
 
 ## Conclusion
 
