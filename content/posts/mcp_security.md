@@ -163,6 +163,8 @@ This is a POC, not a production design. A flat counter is not real anomaly detec
 
 If someone builds on it, these are the gaps I would look at first.
 
+The more interesting direction is probably contextual thresholds: deciding based on _what_ is being accessed, not just how many times. A filesystem server can tell the difference between 50 reads to documentation files and 5 reads to credential files. A server tracking cross-tool patterns could notice "many reads followed by one `send_email`" (a classic exfiltration shape) and elicit before the send goes through. As far as I can tell, no MCP server, gateway, or paper implements behavioral correlation as a trigger for elicitation. That seems worth building next.
+
 ## Conclusion
 
 Not sure if this would work in production. This is just me thinking out loud about what a server-side threshold could look like. Hosts like VS Code already do their own version of "pause and ask." Maybe pushing some of that to the server is the right call, maybe not. Worth exploring.
