@@ -38,7 +38,9 @@ flowchart LR
     D -- Denied --> E[Block]
 </div>
 
-<div style="display: flex; gap: 16px; flex-wrap: wrap; justify-content: center; margin: 1.5em 0; align-items: stretch;">
+<p style="font-size: 0.9em; color: #888; margin-bottom: 0.3em;">▶ Video POCs</p>
+
+<div style="display: flex; gap: 16px; flex-wrap: wrap; justify-content: center; margin: 0 0 1.5em 0; align-items: stretch;">
   <div style="flex: 1; min-width: 250px; max-width: 48%; text-align: center; display: flex; flex-direction: column;">
     <a href="https://www.loom.com/share/38b9c0518eac4b2e8eabebfaebc0c05b" style="flex: 1; display: flex; align-items: center; justify-content: center; overflow: hidden; border-radius: 6px;">
       <img style="width: 100%; height: 220px; object-fit: cover; border-radius: 6px;" src="https://cdn.loom.com/sessions/thumbnails/38b9c0518eac4b2e8eabebfaebc0c05b-19e65bc1da059942-full-play.gif#t=0.1">
@@ -157,9 +159,9 @@ I think this can extend to other protocols too. It remains to be explored, but t
 
 ## Conclusion
 
-This will scale better than constant approvals, but not infinitely. Hosts like VS Code already use request-limit pauses for long-running sessions, and that works because the interruption is occasional rather than constant. The same idea applies here: a server-side threshold is useful precisely because it is selective. [NIST’s](https://nvlpubs.nist.gov/nistpubs/ai/NIST.AI.800-4.pdf) broader warning still holds that human oversight does not scale cleanly with the speed and complexity of AI systems, so the goal is not to review everything. The goal is to spend human attention where it still has signal.
+Not sure if this would work in production. This is just me thinking out loud about what a server-side threshold could look like. The pieces seem to be there: [NIST](https://nvlpubs.nist.gov/nistpubs/ai/NIST.AI.800-4.pdf) keeps warning that human oversight does not scale with AI speed, and hosts like VS Code already do their own version of "pause and ask." Maybe pushing some of that to the server is the right call, maybe not. Worth exploring.
 
-It will not scale by making humans review more. It scales by making them review less, but at better moments.
+Other interesting stuff I am working on: [spotlighting-datamarking](https://github.com/nicholasgcoles/spotlighting-datamarking), an OSS project around data marking for AI systems. Check it out if that sounds up your alley.
 
 Hope this helps.
 
