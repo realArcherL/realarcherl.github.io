@@ -11,7 +11,7 @@ keywords: mcp
 
 The best security control in agent systems is often not a sandbox, a policy engine, or a classifier. It is a well-timed interruption. In AI systems, that interruption can be what breaks the exploit chain.
 
-Human-in-the-loop (HIL) works, but it also adds friction. As [Yampolskiy](https://link.springer.com/article/10.1007/s43681-024-00420-x) notes: "One major issue with human-in-the-loop monitoring is that humans may not be able to keep up with the speed and complexity of AI systems, particularly as they continue to advance and outpace human capabilities." **That raises a practical question:**
+Human-in-the-loop (HIL) works, but it also adds friction. As [Yampolskiy](https://link.springer.com/article/10.1007/s43681-024-00420-x) notes: "One major issue with human-in-the-loop monitoring is that humans may not be able to keep up with the speed and complexity of AI systems, particularly as they continue to advance and outpace human capabilities." Yampolskiy's actual argument goes further: his impossibility results say human oversight is structurally failing, not just slow. I am not solving that deeper problem here. **But it raises a narrower question:**
 
 **What if some of that burden moved to the host OR... let's say the server?**
 
@@ -23,7 +23,7 @@ Instead of acting as a passive executor, the server can watch how tools are bein
 
 MCP [tool annotations](https://modelcontextprotocol.io/specification/2025-11-25/server/tools#tool) can describe intent. `readOnlyHint` helps identify non-destructive tools. `destructiveHint` helps flag operations that deserve tighter review.
 
-> _But those fields are only hints, not trust anchors, especially when the server is not fully trusted._
+> _These fields are only hints, not trust anchors. An untrusted server can lie about them. But here, we control the server, so the annotations are honest and we can build on them._
 
 What is more interesting is what the server can do beyond that. The server can track thresholds within a session. Things like repeated read activity or unusual invocation patterns. Once a threshold is crossed, the server can use MCP [elicitation](https://modelcontextprotocol.io/specification/draft/client/elicitation) to pause the workflow and force a client-side approval step.
 
@@ -149,17 +149,25 @@ How does this generalize? Here is my rough thinking:
 | Write, delete, send, publish           | Ask            | Always                                                                     |
 | External network or open world actions | Ask            | Always, or when destination is not allowlisted                             |
 
+> **On annotation trust:** This table assumes annotations like `readOnlyHint` are truthful. The MCP spec says otherwise: "clients MUST consider tool annotations to be untrusted unless they come from trusted servers." For untrusted servers, the safe default is "Ask, always" regardless of what the server claims.
+
 I think this can extend to other protocols too. It remains to be explored, but the building blocks are already there.
 
-| #   | Protocol / system                                                                 | What it requires                                                                                              | Why it matters                         |
-| --- | --------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------- | -------------------------------------- |
-| 1   | [MCP spec](https://modelcontextprotocol.io/specification/2025-11-25/server/tools) | Clients should show confirmation prompts for sensitive operations and users should be able to deny tool calls | Makes HIL a protocol-level expectation |
-| 2   | [ACP Spec](https://agentcommunicationprotocol.dev/how-to/await-external-response) | Built-in `Await` mechanism pauses execution until an external response arrives                                |                                        |
-| 3   | [A2A Spec](https://a2a-protocol.org/latest/specification/#11-key-goals-of-a2a)    | Task state includes `input-required` so an agent can stop and wait for more input                             |                                        |
+| #   | Protocol / system                                                                 | What it requires                                                                                                                                          | Why it matters                         |
+| --- | --------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------- |
+| 1   | [MCP spec](https://modelcontextprotocol.io/specification/2025-11-25/server/tools) | Clients should show confirmation prompts for sensitive operations and users should be able to deny tool calls                                             | Makes HIL a protocol-level expectation |
+| 2   | [ACP Spec](https://agentcommunicationprotocol.dev/how-to/await-external-response) | Built-in `Await` mechanism pauses execution until an external response arrives (designed for multi-turn data gathering, not security gating specifically) |                                        |
+| 3   | [A2A Spec](https://a2a-protocol.org/latest/specification/#11-key-goals-of-a2a)    | Task state includes `input-required` so an agent can stop and wait for more input (an orchestration primitive, not a security checkpoint)                 |                                        |
+
+## Limitations and open questions
+
+This is a POC, not a production design. A flat counter is not real anomaly detection. Session rotation resets it. [Elicitation](https://modelcontextprotocol.io/specification/draft/client/elicitation) was designed for data gathering, not security gating. And multi-server environments might bypass a per-server threshold entirely. Honestly, you could call this a fancy per-tool rate limit and you would not be entirely wrong.
+
+If someone builds on it, these are the gaps I would look at first.
 
 ## Conclusion
 
-Not sure if this would work in production. This is just me thinking out loud about what a server-side threshold could look like. The pieces seem to be there: [NIST](https://nvlpubs.nist.gov/nistpubs/ai/NIST.AI.800-4.pdf) keeps warning that human oversight does not scale with AI speed, and hosts like VS Code already do their own version of "pause and ask." Maybe pushing some of that to the server is the right call, maybe not. Worth exploring.
+Not sure if this would work in production. This is just me thinking out loud about what a server-side threshold could look like. Hosts like VS Code already do their own version of "pause and ask." Maybe pushing some of that to the server is the right call, maybe not. Worth exploring.
 
 Other interesting stuff I am working on: [spotlighting-datamarking](https://github.com/nicholasgcoles/spotlighting-datamarking), an OSS project around data marking for AI systems. Check it out if that sounds up your alley.
 
