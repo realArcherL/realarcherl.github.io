@@ -38,6 +38,21 @@ flowchart LR
     D -- Denied --> E[Block]
 </div>
 
+<div style="display: flex; gap: 16px; flex-wrap: wrap; justify-content: center; margin: 1.5em 0; align-items: stretch;">
+  <div style="flex: 1; min-width: 250px; max-width: 48%; text-align: center; display: flex; flex-direction: column;">
+    <a href="https://www.loom.com/share/38b9c0518eac4b2e8eabebfaebc0c05b" style="flex: 1; display: flex; align-items: center; justify-content: center; overflow: hidden; border-radius: 6px;">
+      <img style="width: 100%; height: 220px; object-fit: cover; border-radius: 6px;" src="https://cdn.loom.com/sessions/thumbnails/38b9c0518eac4b2e8eabebfaebc0c05b-19e65bc1da059942-full-play.gif#t=0.1">
+    </a>
+    <p style="margin-top: 6px; font-size: 0.85em;">VS Code demo</p>
+  </div>
+  <div style="flex: 1; min-width: 250px; max-width: 48%; text-align: center; display: flex; flex-direction: column;">
+    <a href="https://www.loom.com/share/215863a1373947c4b4a437adf48ddaf4" style="flex: 1; display: flex; align-items: center; justify-content: center; overflow: hidden; border-radius: 6px;">
+      <img style="width: 100%; height: 220px; object-fit: cover; border-radius: 6px;" src="https://cdn.loom.com/sessions/thumbnails/215863a1373947c4b4a437adf48ddaf4-f096b8523df35b13-full-play.gif#t=0.1">
+    </a>
+    <p style="margin-top: 6px; font-size: 0.85em;">Inspector demo</p>
+  </div>
+</div>
+
 <div style="max-height: 400px; overflow-y: auto;">
 
 ```js
