@@ -13,11 +13,11 @@ keywords: mcp
 
 There is no permanent fix for that combination. But if I were building an agentic application today, these are the steps I would take to make it much harder to exploit.
 
-Building a safe agent is like securing an airport:
+Securing an agent is a lot like securing a museum:
 
-1. <u>Separate data from instructions</u> is checking who is a passenger and who is crew
-2. <u>Constrain capabilities</u> is locking doors so people can only enter areas they are allowed to enter
-3. <u>Human in the loop</u> is sending unusual or high-risk cases to manual inspection
+1. Checking tickets at the door separates visitors from staff. → <u>Separate data from instructions</u>
+2. Locking display cases so nothing can be taken even if someone gets past the door. → <u>Constrain capabilities</u>
+3. Calling security when a visitor lingers too long near the vault. → <u>Human in the loop</u>
 
 ## Separate data from instructions
 
@@ -77,6 +77,8 @@ If the capabilities we provide to the model are secure by default, then even if 
 The common thread is clear: the capabilities the model had access to were not secure by default, allowing it to reach files outside the designated directory.
 
 If the server had used a package like [is-path-inside-secure](https://www.npmjs.com/package/is-path-inside-secure), a small, symlink-aware defensive primitive designed for security-sensitive path containment checks, then even with the system compromised, the LLM would still have had no access to files outside the allowed boundary.
+
+> _An LLM agent may try to circumvent path checks indirectly, for example by writing a script that reads the restricted file and then invoking a code execution tool to run it. This is a real concern. The answer is to apply the same principle across the entire tool surface: if the agent has a code execution tool, that tool should run inside a sandbox (a container, a VM, or a restricted runtime) where the same filesystem boundaries are enforced at the OS level._
 
 This is not limited to path traversal. The same principle applies to SSRF, XSS, and other vulnerability classes: use libraries that are secure by construction rather than relying on developers to remember every edge case. For curated lists of such packages, see [tl;dr sec's awesome-secure-defaults](https://github.com/tldrsec/awesome-secure-defaults) and [Liran Tal's awesome-nodejs-security](https://github.com/lirantal/awesome-nodejs-security).
 
