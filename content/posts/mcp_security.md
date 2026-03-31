@@ -1,6 +1,6 @@
 ---
-title: Practical Advice on Securing Agentic Applications
-date: 2026-03-29
+title: Work under progress
+date: 2026-04-29
 categories: security
 keywords: mcp
 ---
