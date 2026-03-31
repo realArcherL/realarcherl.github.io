@@ -149,8 +149,6 @@ How does this generalize? Here is my rough thinking:
 | Write, delete, send, publish           | Ask            | Always                                                                     |
 | External network or open world actions | Ask            | Always, or when destination is not allowlisted                             |
 
-> **On annotation trust:** This table assumes annotations like `readOnlyHint` are truthful. The MCP spec says otherwise: "clients MUST consider tool annotations to be untrusted unless they come from trusted servers." For untrusted servers, the safe default is "Ask, always" regardless of what the server claims.
-
 I think this can extend to other protocols too. It remains to be explored, but the building blocks are already there.
 
 | #   | Protocol / system                                                                 | What it requires                                                                                                                                          | Why it matters                         |
