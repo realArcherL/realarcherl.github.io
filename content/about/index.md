@@ -10,7 +10,6 @@ Security intern at MakeMyTrip in 2021 and Tinder AppSec in 2022 → Loom in 2023
 Currently Contributing to
 
 1. [CyberPeace Institute](https://cyberpeaceinstitute.org/)
-2. [W3C Spec Reviews](https://realarcherl.github.io/W3C-presentations/)
 
 Oh yeah.. Also, I completed my Master's in Cybersecurity at Northeastern University (May, 2023)... _now you know where all those bounties went_.
 
