@@ -169,7 +169,7 @@ The more interesting direction is probably contextual thresholds: deciding based
 
 Not sure if this would work in production. This is just me thinking out loud about what a server-side threshold could look like. Hosts like VS Code already do their own version of "pause and ask." Maybe pushing some of that to the server is the right call, maybe not. Worth exploring.
 
-Other interesting stuff I am working on: [spotlighting-datamarking](https://github.com/nicholasgcoles/spotlighting-datamarking), an OSS project around data marking for AI systems. Check it out if that sounds up your alley.
+Other interesting stuff I am working on: [spotlighting-datamarking](https://www.npmjs.com/package/spotlighting-datamarking), an OSS project around data marking for AI systems. Check it out if that sounds up your alley.
 
 Hope this helps.
 
