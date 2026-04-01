@@ -1,5 +1,5 @@
 ---
-title: 'Threshold based HIL: Orchestrated by Server'
+title: 'Threshold based HITL: Orchestrated by Server'
 date: 2026-03-29
 categories: security
 keywords: mcp
@@ -11,7 +11,7 @@ keywords: mcp
 
 The best security control in agent systems is often not a sandbox, a policy engine, or a classifier. It is a well-timed interruption. In AI systems, that interruption can be what breaks the exploit chain.
 
-Human-in-the-loop (HIL) works, but it also adds friction. As [Yampolskiy](https://link.springer.com/article/10.1007/s43681-024-00420-x) notes: "One major issue with human-in-the-loop monitoring is that humans may not be able to keep up with the speed and complexity of AI systems, particularly as they continue to advance and outpace human capabilities." Yampolskiy's actual argument goes further: his impossibility results say human oversight is structurally failing, not just slow. I am not solving that deeper problem here. **But it raises a narrower question:**
+Human-in-the-loop (HITL) works, but it also adds friction. As [Yampolskiy](https://link.springer.com/article/10.1007/s43681-024-00420-x) notes: "One major issue with human-in-the-loop monitoring is that humans may not be able to keep up with the speed and complexity of AI systems, particularly as they continue to advance and outpace human capabilities." Yampolskiy's actual argument goes further: his impossibility results say human oversight is structurally failing, not just slow. I am not solving that deeper problem here. **But it raises a narrower question:**
 
 **What if some of that burden moved to the host OR... let's say the server?**
 
@@ -151,11 +151,11 @@ How does this generalize? Here is my rough thinking:
 
 I think this can extend to other protocols too. It remains to be explored, but the building blocks are already there.
 
-| #   | Protocol / system                                                                 | What it requires                                                                                                                                          | Why it matters                         |
-| --- | --------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------- |
-| 1   | [MCP spec](https://modelcontextprotocol.io/specification/2025-11-25/server/tools) | Clients should show confirmation prompts for sensitive operations and users should be able to deny tool calls                                             | Makes HIL a protocol-level expectation |
-| 2   | [ACP Spec](https://agentcommunicationprotocol.dev/how-to/await-external-response) | Built-in `Await` mechanism pauses execution until an external response arrives (designed for multi-turn data gathering, not security gating specifically) |                                        |
-| 3   | [A2A Spec](https://a2a-protocol.org/latest/specification/#11-key-goals-of-a2a)    | Task state includes `input-required` so an agent can stop and wait for more input (an orchestration primitive, not a security checkpoint)                 |                                        |
+| #   | Protocol / system                                                                 | What it requires                                                                                                                                          | Why it matters                          |
+| --- | --------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------- |
+| 1   | [MCP spec](https://modelcontextprotocol.io/specification/2025-11-25/server/tools) | Clients should show confirmation prompts for sensitive operations and users should be able to deny tool calls                                             | Makes HITL a protocol-level expectation |
+| 2   | [ACP Spec](https://agentcommunicationprotocol.dev/how-to/await-external-response) | Built-in `Await` mechanism pauses execution until an external response arrives (designed for multi-turn data gathering, not security gating specifically) |                                         |
+| 3   | [A2A Spec](https://a2a-protocol.org/latest/specification/#11-key-goals-of-a2a)    | Task state includes `input-required` so an agent can stop and wait for more input (an orchestration primitive, not a security checkpoint)                 |                                         |
 
 ## Limitations and open questions
 
