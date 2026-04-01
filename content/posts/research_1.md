@@ -14,7 +14,7 @@ keywords:
 > - [7-CVEs](/cve)
 > - [NPM package](https://www.npmjs.com/package/is-path-inside-secure)
 > - [3 talks](/talks) &
-> - [CTF](https://play.secdim.com/game/appsec-village-2025/challenge/slipstreamjs)
+> - [CTF](https://play.secdim.com/game/javascript/challenge/slipstreamjs)
 
 TL;DR: I found some path traversal issues in open source projects!
 
@@ -53,7 +53,7 @@ app.get('/download-user-file', async (req, res) => {
   // Do some authentication
   let rows = accountDb.all(
     'SELECT id FROM files WHERE id = ? AND deleted = FALSE',
-    [fileId]
+    [fileId],
   );
   if (rows.length === 0) {
     res.status(400).send('User or file not found');
