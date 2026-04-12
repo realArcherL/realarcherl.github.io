@@ -1,5 +1,5 @@
 ---
-title: 'Threshold based HITL: Using Elicitation'
+title: 'Threshold based HITL in MCP: Using Elicitation'
 date: 2026-03-29
 categories: security
 keywords: mcp

@@ -8,8 +8,9 @@ keywords:
 
 # My OSS Projects
 
-- NPM | [is-path-inside-secure](https://www.npmjs.com/package/is-path-inside-secure)
-- NPM | [spotlighting-datamarking](https://www.npmjs.com/package/spotlighting-datamarking)
+1. NPM | [is-path-inside-secure](https://www.npmjs.com/package/is-path-inside-secure)
+2. NPM | [spotlighting-datamarking](https://www.npmjs.com/package/spotlighting-datamarking)
+3. NPM Package Blast Radius | [OpenSecure](https://realarcherl.github.io/opensecure/)
 
 # OSS Project Contributions
 
