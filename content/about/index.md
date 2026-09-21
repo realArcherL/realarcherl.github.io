@@ -10,6 +10,7 @@ Security intern at MakeMyTrip in 2021 and Tinder AppSec in 2022 → Loom in 2023
 Currently Contributing to
 
 1. [CyberPeace Institute](https://cyberpeaceinstitute.org/)
+2. W3C standards through security and privacy reviews, threat modeling, and recommendations ([my reviews](/oss/#w3c-standards-reviews)).
 
 Oh yeah.. Also, I completed my Master's in Cybersecurity at Northeastern University (May, 2023)... _now you know where all those bounties went_.
 
