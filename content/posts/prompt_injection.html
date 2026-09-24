@@ -1,0 +1,822 @@
+---
+title: "Is indirect prompt injection still a big threat as models get more advanced?"
+customArticle: true
+date: 2026-09-24
+---
+
+<div class="prompt-injection">
+
+      <div class="short-answer">
+        <p>
+          <strong>Short answer:</strong> not much against the newest models, at least with today's attacks.
+          Elsewhere, it's still a real threat.
+        </p>
+        <ul>
+          <li>Even with 15 tries, attackers beat Opus 5.5 about 1 time in 100. Other labs' models: 1 in 4 or worse.
+            <a href="#model-as-defence">Inside the labs</a></li>
+          <li>Real attacks planted on the web are still crude and mostly fail.
+            <a href="#outside-the-labs">Outside the labs</a></li>
+          <li>Criminals have started using it to steal API keys.
+            <a href="#real-attackers">Real attackers</a></li>
+          <li>Attackers who keep trying still win on older models. On the newest ones, only the labs' own tests exist
+            so far, and they rarely got through.
+            <a href="#conclusion">Conclusion</a></li>
+        </ul>
+
+        <p><strong>If you're building an agentic app:</strong></p>
+        <ul>
+          <li>Benchmark your app with different models and see which ones do the job best.
+            <a href="#ipi-mcp-environment">MCP studies</a></li>
+          <li>Then compare which of those are safest. Right now, that looks like the Claude family.
+            <a href="#go-to-model">Go-to model</a></li>
+        </ul>
+      </div>
+
+      <!-- Introduction section goes here -->
+
+      <section id="model-as-defence">
+        <h2 id="inside-the-labs-are-newer-models-harder-to-fool"><a class="heading-link" href="#inside-the-labs-are-newer-models-harder-to-fool">Inside the labs: are newer models harder to fool?</a></h2>
+
+        <p>
+          Labs often publish a system card alongside major releases: a report on how
+          the model was built and tested. The idea grew out of <a href="https://arxiv.org/abs/1810.03993">model cards</a>, proposed by
+          Mitchell et al. in 2018. Each lab keeps its cards in one place:
+          <a href="https://www.anthropic.com/system-cards">Anthropic</a>,
+          <a href="https://deploymentsafety.openai.com/">OpenAI</a> and
+          <a href="https://deepmind.google/models/model-cards/">Google DeepMind</a>.
+        </p>
+
+        <p>
+          Part of that testing comes from <a href="https://www.grayswan.ai/">Gray Swan</a>,
+          an outside red-team company. Gray Swan runs public competitions in its
+          <a href="https://app.grayswan.ai/arena">Arena</a>, where thousands of people try to trick
+          AI models. It keeps the attacks that fool many different models, not just the one
+          they were aimed at, and packs them into a benchmark that labs run before release.
+          The April chart uses its <a href="https://arxiv.org/abs/2507.20526">ART benchmark</a>,
+          which covers tool use only. By mid-year, Claude models had
+          largely maxed it out, so the September chart uses its newer,
+          broader <a href="https://arxiv.org/abs/2603.15714">IPI benchmark</a>, which
+          adds coding and computer use.
+        </p>
+
+        <div class="with-note">
+          <aside class="sidenote">
+            <div class="sidenote-inner">
+              <p class="note">
+                <strong>How to read the charts.</strong> Each test scenario gives the attacker a set number of
+                tries to make the model follow hidden instructions: 100 tries in the April chart,
+                15 in the September one. Each bar is Gray Swan's estimated chance that at least one
+                of those tries works, averaged across the test's scenarios. Lower is better. The two charts use different tests and different
+                numbers of tries, so compare models within a chart, not across the two.
+                In April, each model appears twice, with "thinking" (step-by-step reasoning)
+                switched on and off; the circles mark the thinking bars. In September, every
+                model was tested with thinking on.
+              </p>
+            </div>
+          </aside>
+
+          <h3 id="april-2026-attackers-get-100-tries"><a class="heading-link" href="#april-2026-attackers-get-100-tries">April 2026: attackers get 100 tries</a></h3>
+
+          <figure>
+            <img src="../../images/april-opus-4-7-fig-5-2-1-A.png"
+                 alt="Bar chart of indirect prompt injection success rates across models, April 2026. Circled with-thinking bars at 100 tries: Gemini 3.1 Pro 45.5%, GPT-5.4 32.5%, Opus 4.6 21.7%, Opus 4.7 6.0%.">
+            <figcaption>
+              <a href="https://www.anthropic.com/claude-opus-4-7-system-card#page=83&amp;zoom=100,0,562">Claude Opus 4.7 System Card</a>, Figure 5.2.1.A, p. 83. Circles added: the "Thinking" bars at 100 tries.
+            </figcaption>
+          </figure>
+
+          <table class="stats">
+            <thead>
+              <tr><th>Model</th><th class="num">Attack success</th><th>About 1 time in…</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Gemini 3.1 Pro</td><td class="num">45.5%</td><td>1 in 2</td></tr>
+              <tr><td>GPT-5.4</td><td class="num">32.5%</td><td>1 in 3</td></tr>
+              <tr><td>Claude Opus 4.6</td><td class="num">21.7%</td><td>1 in 5</td></tr>
+              <tr class="best"><td>Claude Opus 4.7</td><td class="num">6.0%</td><td>1 in 17</td></tr>
+            </tbody>
+          </table>
+
+          <p>
+            In April, an attacker allowed 100 tries per scenario could still trick a lot of models.
+            Against GPT-5.4, the attacker succeeded about <strong>1 time in 3</strong>, and against
+            Gemini 3.1 Pro almost <strong>1 time in 2</strong>. Claude's newest model held up much
+            better: against Opus 4.7, the attacker succeeded <strong>6.0%</strong> of the time, down
+            from <strong>21.7%</strong> for Opus 4.6.
+          </p>
+
+          <h3 id="september-2026-a-new-test-15-tries"><a class="heading-link" href="#september-2026-a-new-test-15-tries">September 2026: a new test, 15 tries</a></h3>
+
+          <figure>
+            <img src="../../images/september-opus-5-5-fig-5-2-1-A.png"
+                 alt="Bar chart of success rates on the Gray Swan IPI benchmark, September 2026. Circled values at 15 tries: GPT-5.6 Sol 27.0%, GPT-6 Astra 8.5%, Claude Opus 5 4.8%, Claude Opus 5.5 1.0%.">
+            <figcaption>
+              <a href="https://www.anthropic.com/claude-opus-5-5-system-card#page=85&amp;zoom=100,0,513">Claude Opus 5.5 System Card</a>, Figure 5.2.1.A, p. 85. Circles added: success within 15 tries.
+            </figcaption>
+          </figure>
+
+          <table class="stats">
+            <thead>
+              <tr><th>Model</th><th class="num">Attack success</th><th>About 1 time in…</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>GPT-5.6 Sol</td><td class="num">27.0%</td><td>1 in 4</td></tr>
+              <tr><td>GPT-6 Astra</td><td class="num">8.5%</td><td>1 in 12</td></tr>
+              <tr><td>Claude Opus 5</td><td class="num">4.8%</td><td>1 in 21</td></tr>
+              <tr class="best"><td>Claude Opus 5.5</td><td class="num">1.0%</td><td>1 in 100</td></tr>
+            </tbody>
+          </table>
+
+          <p>
+            By September, even with 15 tries, the estimated chance of a successful attack on Opus 5.5
+            was <strong>1.0%</strong>, down from <strong>4.8%</strong> for Opus 5. OpenAI improved too:
+            GPT-6 Astra's was <strong>8.5%</strong>, down from <strong>27.0%</strong> for GPT-5.6 Sol.
+          </p>
+        </div>
+
+        <div class="with-note">
+          <h3 id="newer-models-are-much-harder-to-fool"><a class="heading-link" href="#newer-models-are-much-harder-to-fool">Newer models are much harder to fool</a></h3>
+
+          <p>
+            You can't line up the two charts number for number, because they use different tests.
+            But look inside each chart and the pattern is the same: in every pair below, the newer
+            model's estimated attack success rate was lower than the one it replaced, by roughly
+            1.5× to 6.5× on these tests, often within a few months. The September gains came on a
+            broader test that adds coding and computer use.
+          </p>
+
+          <table class="stats trend">
+            <thead>
+              <tr><th>Older → newer model</th><th class="num">Before</th><th class="num">After</th><th>Change</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Gemini 3 Pro Preview → 3.1 Pro <span class="muted">(April)</span></td><td class="num">75.6%</td><td class="num">45.5%</td><td>about 1.7× lower</td></tr>
+              <tr><td>GPT-5.2 → GPT-5.4 <span class="muted">(April)</span></td><td class="num">49.2%</td><td class="num">32.5%</td><td>about 1.5× lower</td></tr>
+              <tr><td>Claude Opus 4.6 → 4.7 <span class="muted">(April)</span></td><td class="num">21.7%</td><td class="num">6.0%</td><td>about 3.6× lower</td></tr>
+              <tr><td>GPT-5.6 Sol → GPT-6 Astra <span class="muted">(Sept)</span></td><td class="num">27.0%</td><td class="num">8.5%</td><td>about 3.2× lower</td></tr>
+              <tr><td>Claude Opus 5 → 5.5 <span class="muted">(Sept)</span></td><td class="num">4.8%</td><td class="num">1.0%</td><td>about 4.8× lower</td></tr>
+              <tr><td>Claude Fable 5 → 5.1 <span class="muted">(Sept)</span></td><td class="num">6.5%</td><td class="num">1.0%</td><td>about 6.5× lower</td></tr>
+            </tbody>
+          </table>
+
+          <aside class="sidenote">
+            <div class="sidenote-inner">
+              <div class="note why">
+                <p>
+                  <strong>Why are newer models so much harder to fool?</strong> Both
+                  <a href="https://www.anthropic.com/claude-opus-5-5-system-card#page=123&amp;search=We%20train%20our%20models%20to%20resist%20these%20attacks&amp;phrase=true">Anthropic</a>
+                  and <a href="https://deploymentsafety.openai.com/gpt-6-astra#prompt-injection">OpenAI</a> say they train their models
+                  specifically to resist these attacks. 
+                </p>
+              </div>
+            </div>
+          </aside>
+
+        </div>
+
+        <h3 id="what-about-models-from-other-labs"><a class="heading-link" href="#what-about-models-from-other-labs">What about models from other labs?</a></h3>
+
+        <p>
+          They're fooled far more often. In the same September test, six models from other labs were
+          fooled in <strong>24%</strong> to <strong>60%</strong> of scenarios. GPT-6 Astra was fooled in
+          <strong>8.5%</strong> and Claude Opus 5 in <strong>4.8%</strong>
+          (<a href="https://deploymentsafety.openai.com/gpt-6-astra#prompt-injection">GPT-6 Astra system card</a>).
+        </p>
+
+        <p>
+          And the gap only runs one way. In Gray Swan's 2025 competition, the attacks that managed to break
+          Claude Opus 4.5 went on to work against the other models
+          <a href="https://arxiv.org/pdf/2603.15714#page=12">44–81% of the time</a>, while attacks that broke
+          the weaker models rarely got past the stronger ones.
+        </p>
+
+        <figure>
+          <img src="../../images/september-gpt-6-astra-fig-5.png"
+               alt="Bar chart from the GPT-6 Astra system card of Gray Swan IPI benchmark results. Circled values within 15 tries: Muse Spark 1.2 24.2%, Qwen 3.8 28.6%, GLM-5.3 31.5%, Grok 4.6 51.8%, Kimi K3 52.7%, DeepSeek V4 Pro 60.1%. GPT-6 Astra is at 8.5% and Claude Opus 5 at 4.8%.">
+          <figcaption>
+            <a href="https://deploymentsafety.openai.com/gpt-6-astra#prompt-injection">GPT-6 Astra System Card</a>, Figure 5, printed p. 19.
+            Circles added: models from other labs, within 15 tries. † Not tested on computer use.
+          </figcaption>
+        </figure>
+
+        <table class="stats">
+          <thead>
+            <tr><th>Model</th><th class="num">Fooled within 15 tries</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Muse Spark 1.2</td><td class="num">24.2%</td></tr>
+            <tr><td>Qwen 3.8 †</td><td class="num">28.6%</td></tr>
+            <tr><td>GLM-5.3 †</td><td class="num">31.5%</td></tr>
+            <tr><td>Grok 4.6</td><td class="num">51.8%</td></tr>
+            <tr><td>Kimi K3</td><td class="num">52.7%</td></tr>
+            <tr><td>DeepSeek V4 Pro †</td><td class="num">60.1%</td></tr>
+            <tr class="ref"><td>GPT-6 Astra <span class="muted">(for reference)</span></td><td class="num">8.5%</td></tr>
+            <tr class="ref"><td>Claude Opus 5 <span class="muted">(for reference)</span></td><td class="num">4.8%</td></tr>
+          </tbody>
+        </table>
+
+        <p>
+          So the labs' own numbers point one way: prompt injection is getting harder to pull off, and fast,
+          especially against the newest models from Anthropic and OpenAI.
+        </p>
+
+      </section>
+
+      <section id="academic-research">
+        <h2 id="does-another-benchmark-agree"><a class="heading-link" href="#does-another-benchmark-agree">Does another benchmark agree?</a></h2>
+        <div class="with-note">
+          <aside class="sidenote" aria-label="How this study differs from Gray Swan's tests">
+            <div class="sidenote-inner">
+              <div class="note method-note">
+                <p><strong>Why the numbers don't line up.</strong></p>
+                <ul>
+                  <li><strong>What's tested:</strong> one model response, not a full agent run
+                    (<a href="https://arxiv.org/pdf/2510.22620v2#page=4">p. 4</a>).</li>
+                  <li><strong>Attacks:</strong> 210 picked from Lakera's Gandalf Agent Breaker game, including
+                    direct attacks (<a href="https://arxiv.org/pdf/2510.22620v2#page=6">pp. 6–7</a>).
+                    Gray Swan uses indirect attacks only.</li>
+                  <li><strong>Score:</strong> 0–1 for how close the output gets to the attacker's goal
+                    (<a href="https://arxiv.org/pdf/2510.22620v2#page=7">p. 7</a>). Gray Swan reports the chance
+                    that at least one of several tries works.</li>
+                  <li><strong>Closed vs open:</strong> closed models were tested with their labs' guardrails on,
+                    open models without (<a href="https://arxiv.org/pdf/2510.22620v2#page=8">p. 8</a>).</li>
+                </ul>
+              </div>
+            </div>
+          </aside>
+
+          <p>
+            Lakera, a security company, ran its own test of 34 models in
+            <a href="https://arxiv.org/pdf/2510.22620v2#page=1"><cite>Breaking Agent Backbones</cite></a>
+            (<a href="https://iclr.cc/virtual/2026/poster/10007758">ICLR 2026</a>). It works differently from
+            Gray Swan's, so instead of lining up the numbers, it's more useful to ask whether the two reach the
+            same conclusions.
+          </p>
+
+          <table class="stats compare-table bench-compare">
+            <thead>
+              <tr><th scope="col">Question</th><th scope="col">Lakera</th><th scope="col">Gray Swan</th><th scope="col">Agree?</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th scope="row">Who resists best?</th>
+                <td>Claude models; closed models beat open ones</td>
+                <td>Claude and GPT, well ahead of the rest</td>
+                <td><strong>Yes</strong></td>
+              </tr>
+              <tr>
+                <th scope="row">Does a bigger model help?</th>
+                <td>Not consistently</td>
+                <td>Slightly, within Claude; family matters more</td>
+                <td><strong>Mostly</strong></td>
+              </tr>
+              <tr>
+                <th scope="row">Does reasoning help?</th>
+                <td>Usually</td>
+                <td>Mixed, on different models</td>
+                <td><strong>Can't tell</strong></td>
+              </tr>
+            </tbody>
+          </table>
+
+          <h3 id="who-resists-best-both-point-to-the-same-models"><a class="heading-link" href="#who-resists-best-both-point-to-the-same-models">Who resists best: both point to the same models</a></h3>
+
+          <p>
+            In Lakera's test, the
+            <a href="https://arxiv.org/pdf/2510.22620v2#page=8&amp;zoom=100&amp;search=The%20most%20secure%20models&amp;phrase=true">most secure models were Claude Haiku 4.5 and Sonnet 4.5</a>,
+            and closed-weight models generally beat open-weight ones
+            (<a href="https://arxiv.org/pdf/2510.22620v2#page=8&amp;zoom=100&amp;search=Closed%20weights%20systems%20generally%20outperform&amp;phrase=true">p. 8</a>).
+            Gray Swan's 2025 competition found the same split: <q>Claude and GPT families stand out with notably
+            lower ASRs compared to other model families</q>
+            (<a href="https://arxiv.org/pdf/2603.15714#page=9&amp;zoom=100&amp;search=Claude%20and%20GPT%20families%20stand%20out&amp;phrase=true">p. 9</a>).
+          </p>
+
+          <h3 id="model-size-not-a-reliable-lever-in-either"><a class="heading-link" href="#model-size-not-a-reliable-lever-in-either">Model size: not a reliable lever in either</a></h3>
+
+          <p>
+            Both tests compared Claude Haiku 4.5 and Sonnet 4.5 with reasoning off, and they put them in opposite
+            order. In Lakera's test, larger models without reasoning <q>showed no significant performance advantage
+            over their smaller counterparts, and occasionally performed worse</q>
+            (<a href="https://arxiv.org/pdf/2510.22620v2#page=8&amp;zoom=100&amp;search=showed%20no%20significant%20performance%20advantage&amp;phrase=true">p. 8</a>),
+            and Sonnet 4.5 did worse than the smaller Haiku 4.5
+            (<a href="https://arxiv.org/pdf/2510.22620v2#page=28">Figure 9, p. 28</a>). With reasoning on,
+            <a href="https://arxiv.org/pdf/2510.22620v2#page=8&amp;zoom=100&amp;search=modest%20improvements&amp;phrase=true">bigger models did slightly better</a>.
+          </p>
+        </div>
+
+        <figure class="backbones-figure">
+          <div class="annotated-chart size-chart">
+            <img src="../../images/backbones-model-size.png" width="700" height="496"
+                 alt="Model-size comparison from Figure 9, reasoning off. Circles highlight Claude Haiku 4.5 at roughly 0.17 and the larger Sonnet 4.5 at roughly 0.25; lower is better.">
+            <svg class="chart-circles" viewBox="0 0 700 496" aria-hidden="true" focusable="false">
+              <ellipse cx="407" cy="379" rx="28" ry="25" />
+              <ellipse cx="621" cy="323" rx="28" ry="25" />
+            </svg>
+          </div>
+          <img class="chart-legend" src="../../images/backbones-model-size-legend.png" width="440" height="248"
+               alt="Figure 9 legend: red compares Claude 4.5 Haiku and Sonnet; other lines compare model sizes within six other families; diamonds show the mean.">
+          <figcaption><a href="https://arxiv.org/pdf/2510.22620v2#page=28">Figure 9, p. 28</a>, reasoning-off panel; lower is better. Circles highlight Haiku 4.5 and the larger Sonnet 4.5.</figcaption>
+        </figure>
+
+        <p>
+          Gray Swan, which also ran with
+          <a href="https://arxiv.org/pdf/2603.15714#page=14&amp;zoom=100&amp;search=disable%20thinking&amp;phrase=true">thinking off</a>,
+          found the bigger model slightly ahead: Opus 4.5 at <strong>0.5%</strong>, Sonnet 4.5 at <strong>1.0%</strong> and
+          Haiku 4.5 at <strong>1.3%</strong> (<a href="https://arxiv.org/pdf/2603.15714#page=9">p. 9</a>). But all three sit
+          within about a point, and the authors conclude that robustness depends more on <q>model family and its training
+          recipe than the raw capability of models</q>
+          (<a href="https://arxiv.org/pdf/2603.15714#page=10&amp;zoom=100&amp;search=training%20recipe&amp;phrase=true">p. 10</a>).
+        </p>
+
+        <figure>
+          <div class="annotated-chart grayswan-chart">
+            <img src="../../images/grayswan-fig1-asr-by-model.png" width="1306" height="733"
+                 alt="Bar chart of attack success rate by model in Gray Swan's 2025 competition. Gemini 2.5 Pro is highest at 8.5%; GPT-5.1 2.5%, GPT-5 2.0%; circled Claude models: Haiku 4.5 1.3%, Sonnet 4.5 1.0%, Opus 4.5 0.5%.">
+            <svg class="chart-circles" viewBox="0 0 1306 733" aria-hidden="true" focusable="false">
+              <ellipse cx="1142" cy="474" rx="160" ry="86" />
+            </svg>
+          </div>
+          <figcaption><a href="https://arxiv.org/pdf/2603.15714#page=2">Figure 1, p. 2</a>, attack success by model in Gray Swan's 2025 competition, thinking off; lower is better. Circle added: the three Claude models.</figcaption>
+        </figure>
+
+        <h3 id="reasoning-no-fair-comparison-yet"><a class="heading-link" href="#reasoning-no-fair-comparison-yet">Reasoning: no fair comparison yet</a></h3>
+
+        <p>
+          Lakera found that <q>adding reasoning generally improves the security</q>, and that
+          <q>only the tiny model versions exhibit decreased security as reasoning increases</q>
+          (<a href="https://arxiv.org/pdf/2510.22620v2#page=8">p. 8</a>).
+        </p>
+
+        <figure class="backbones-figure">
+          <div class="annotated-chart reasoning-chart">
+            <img src="../../images/backbones-reasoning-ranking.png" width="1010" height="1315"
+                 alt="Ranking of 48 model configurations by vulnerability score from Figure 2, lower is better. Orange bars have reasoning on, green bars off. Circled: claude-sonnet-4-5 with reasoning at 0.15 and without at 0.25; gpt-5-nano without reasoning at 0.34 and with reasoning at 0.38.">
+            <svg class="chart-circles" viewBox="0 0 1010 1315" aria-hidden="true" focusable="false">
+              <ellipse cx="236" cy="66" rx="142" ry="17" />
+              <ellipse cx="262" cy="140" rx="116" ry="17" />
+              <ellipse cx="302" cy="386" rx="76" ry="17" />
+              <ellipse cx="277" cy="534" rx="101" ry="17" />
+            </svg>
+          </div>
+          <figcaption><a href="https://arxiv.org/pdf/2510.22620v2#page=9">Figure 2 (right), p. 9</a>. Orange bars have reasoning on, green off; scores run 0–1, lower is better. Circled: Sonnet 4.5 improves with reasoning (0.25 → 0.15), GPT-5 nano gets worse (0.34 → 0.38).</figcaption>
+        </figure>
+
+        <p>
+          Gray Swan's April chart was mixed: turning thinking on helped four models and hurt four others, including
+          Opus 4.6 and Opus 4.7 (<a href="https://www.anthropic.com/claude-opus-4-7-system-card#page=83&amp;zoom=100,0,562">p. 83</a>).
+          But it tested different models from Lakera's, so the two can't be set side by side. By September, Gray Swan ran
+          <a href="https://www.anthropic.com/claude-opus-5-5-system-card#page=85&amp;search=All%20models%20use%20extended%20thinking&amp;phrase=true">every model with thinking on</a>,
+          so its results compare models on the same footing.
+        </p>
+
+        <h3 id="go-to-model"><a class="heading-link" href="#go-to-model">Should Claude be your go-to model for agents?</a></h3>
+
+        <p>
+          <strong>Yes, on this evidence.</strong> Claude leads in the labs' charts and in Lakera's test. But Anthropic's own report flags two things to check before you
+          rely on it:
+        </p>
+
+        <ul class="findings">
+          <li>
+            <strong>Check which model actually answers.</strong> When a cyber-safety check triggers, Opus 5.5 hands
+            the request to the older Opus 4.8. In Anthropic's adaptive coding test, that happened for about two thirds
+            of requests, and attacks got through on
+            <a href="https://www.anthropic.com/claude-opus-5-5-system-card#page=88&amp;search=85.73%25&amp;phrase=true">most of those</a>.
+            None got through on the requests Opus 5.5 answered itself.
+          </li>
+          <li>
+            <strong>Check how outside text reaches the model.</strong> Claude is trained to distrust instructions that
+            arrive in tool results. Text pasted into the user's own message is a weaker spot: an early Opus 5.5 build
+            followed planted instructions there
+            <a href="https://www.anthropic.com/claude-opus-5-5-system-card#page=125&amp;search=in%2052%25%20of%20attempts&amp;phrase=true">about half the time</a>.
+            Retraining cut that to about 2%, and Anthropic's own apps add fixes that bring it
+            <a href="https://www.anthropic.com/claude-opus-5-5-system-card#page=126&amp;search=did%20not%20follow%20any&amp;phrase=true">to zero</a>.
+            If you build on the API, you may need similar fixes of your own.
+          </li>
+        </ul>
+
+        <p>
+          So Claude is a strong default for agents, as long as you check which model actually answers and how
+          outside text reaches it.
+        </p>
+
+        <div class="callout">
+          <p class="callout-label">Takeaway</p>
+          <p>
+            Two benchmarks built in different ways agree on the big picture: model family and training matter more
+            than size. Neither reasoning nor a bigger model reliably helps, so test the model inside your own agent.
+          </p>
+        </div>
+      </section>
+
+      <section id="ipi-mcp-environment">
+        <h2 id="where-the-lab-numbers-stop-mcp"><a class="heading-link" href="#where-the-lab-numbers-stop-mcp">Where the lab numbers stop: MCP</a></h2>
+        <p>The lab charts only test instructions hidden in the content an agent reads, like web pages, files
+          and tool results. MCP gives attackers more ways in. They can hide instructions in a tool's description,
+          pass them through tool arguments, or ship a server with malicious code. The studies below test these
+          paths, but on older models like GPT-5 and Sonnet 4.5. So they don't show the lab numbers are wrong,
+          just where those numbers stop.</p>
+
+        <div class="with-note">
+          <aside class="sidenote" aria-label="Comparing research results">
+            <div class="sidenote-inner">
+              <p class="note">
+                <strong>A note on comparisons.</strong> These MCP studies plant the attack in different
+                places (tool descriptions, tool responses, retrieved pages or the server's own code)
+                and count different outcomes: a server exploited, data leaked, or a harmful tool call
+                chosen. Read each result in that context; don't compare its numbers directly with
+                Gray Swan's or another paper's unless the tests match.
+              </p>
+            </div>
+          </aside>
+
+          <div class="research-table-wrap" role="region" aria-label="MCP research results" tabindex="0">
+            <table class="stats research-table">
+              <thead>
+                <tr>
+                  <th scope="col">Paper and what it tested</th>
+                  <th scope="col">Did the model stop the attack?</th>
+                  <th scope="col">What else could help?</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr class="research-category">
+                  <th colspan="3" scope="rowgroup">Security Research</th>
+                </tr>
+                <tr id="viper-mcp">
+                  <td>
+                    <p><a href="https://arxiv.org/pdf/2605.21392v2#page=1"><cite>VIPER-MCP</cite></a><br>
+                    <span class="muted">12 Aug 2026 (v2) · arXiv preprint</span></p>
+                    <p><strong>Attack enters through:</strong> prompts that become tool arguments.<br>
+                    <strong>Test checks:</strong> can the agent exploit a bug in an MCP server?
+                    <a href="https://arxiv.org/pdf/2605.21392v2#page=3">Method, Sections 2–3</a>.</p>
+                    <p>The authors report <a href="https://arxiv.org/pdf/2605.21392v2#page=10&amp;zoom=100&amp;search=Takeaway%201&amp;phrase=true">106 new bugs across 39,884 repositories</a> and 67 assigned CVEs, though
+                    <a href="https://arxiv.org/pdf/2605.21392v2#page=17">the CVE IDs are placeholders</a>.</p>
+                  </td>
+                  <td>
+                    <p><strong>Neither Haiku 4.5 nor GPT-5.4-mini reliably stopped exploitation.</strong>
+                    With GPT-5.4-mini generating and assessing attacks, bugs were triggered on
+                    <a href="https://arxiv.org/pdf/2605.21392v2#page=13&amp;zoom=100&amp;search=TABLE%204&amp;phrase=true">83 of 130 servers through Haiku, and 84 through GPT-5.4-mini</a>.</p>
+                    <p>These count servers exploited, not success per prompt. Direct attacker prompts were allowed,
+                    so this isn't comparable to Gray Swan's indirect-injection scores.</p>
+                  </td>
+                  <td>
+                    <p><strong>Fix the tools too.</strong> The authors recommend
+                    <a href="https://arxiv.org/pdf/2605.21392v2#page=13&amp;zoom=100&amp;search=parameterized%20invocation&amp;phrase=true">parameterized command invocation, allowlist validation, and path canonicalization with confinement</a>.
+                    They don't test these defences.</p>
+                    <p>The study covers three bug classes in Python and JavaScript/TypeScript.
+                    It doesn't establish safety across other tools or deployments.</p>
+                  </td>
+                </tr>
+                <tr class="research-category">
+                  <th colspan="3" scope="rowgroup">Peer Reviewed</th>
+                </tr>
+                <tr id="agentbound">
+                  <td>
+                    <p><a href="https://arxiv.org/pdf/2510.21236v3#page=1"><cite>AgentBound</cite></a><br>
+                    <span class="muted">24 Apr 2026 (v3) · <a href="https://doi.org/10.1145/3808103">FSE 2026</a></span></p>
+                    <p><strong>Attack enters through:</strong> injected instructions or malicious MCP server code.<br>
+                    <strong>Test checks:</strong> do enforced permissions stop unauthorized file, network or system access?
+                    <a href="https://arxiv.org/pdf/2510.21236v3#page=15">Section 4.2</a>.</p>
+                    <p>Not all attacks use IPI: server code can act maliciously without tricking the model.</p>
+                  </td>
+                  <td>
+                    <p><strong>No model-resistance comparison.</strong> GPT-5-mini and GPT-5 help generate permission policies;
+                    they aren't compared as defenders.
+                    <a href="https://arxiv.org/pdf/2510.21236v3#page=12">Section 4.1</a>.</p>
+                    <p>Unlike Gray Swan's IPI tests, this evaluates whether a sandbox contains harmful actions,
+                    rather than whether the model rejects injected instructions.</p>
+                  </td>
+                  <td>
+                    <p><strong>Enforced permissions blocked nine attacks that exceeded them.</strong>
+                    But <a href="https://arxiv.org/pdf/2510.21236v3#page=16">redirected transfers and SQL injection still got through</a>
+                    when they used permitted resources.</p>
+                    <p>The security tests used a small set of malicious servers and manually written or checked policies.
+                    The result depends on what those policies allow; it isn't general protection against IPI.</p>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <p><a href="https://arxiv.org/pdf/2510.15994v2#page=1"><cite>MCP Security Bench (MSB)</cite></a><br>
+                    <span class="muted">2025; revised 24 Mar 2026 (v2) · <a href="https://iclr.cc/virtual/2026/poster/10008216">ICLR 2026</a></span></p>
+                    <p><strong>Attack enters through:</strong> tool names, descriptions, parameters, responses and retrieved content.<br>
+                    <strong>Test checks:</strong> did the attack work, and could the agent still do the user's task?
+                    <a href="https://arxiv.org/pdf/2510.15994v2#page=7&amp;zoom=100&amp;search=Evaluation%20Metrics&amp;phrase=true">Method, pp. 7–8</a>.</p>
+                    <p>Some checks are limited: one “leakage” test only asks for the model's name.
+                    <a href="https://arxiv.org/pdf/2510.15994v2#page=29&amp;zoom=100&amp;search=Table%209&amp;phrase=true">Table 9</a>.</p>
+                  </td>
+                  <td>
+                    <p><strong>GPT-5 had the best combined score for usefulness and resistance.</strong>
+                    But results varied:
+                    <a href="https://arxiv.org/pdf/2510.15994v2#page=9&amp;zoom=100&amp;search=GPT-5&amp;phrase=true">0.33% attack success for fake user messages versus 48.85% for poisoned tool descriptions</a>.</p>
+                    <p>A low attack rate alone can hide a model that struggles to use tools.
+                    <a href="https://arxiv.org/pdf/2510.15994v2#page=10&amp;zoom=100&amp;search=NRP&amp;phrase=true">The combined score</a>
+                    rewards useful work too; it doesn't mean the model is safe.</p>
+                  </td>
+                  <td>
+                    <p><strong>A tested defence blocked more attacks, but also more useful work.</strong>
+                    With the MCIP safety checker, average attack success fell from
+                    <a href="https://arxiv.org/pdf/2510.15994v2#page=10&amp;zoom=100&amp;search=Table%204&amp;phrase=true">40.35% to 28.69%</a>;
+                    task completion fell from 56.50% to 48.91%.</p>
+                    <p>The combined score improved slightly on average, but fell for GPT-5.</p>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <p><a href="https://arxiv.org/pdf/2509.06572v5#page=1"><cite>Parasites in the Toolchain</cite></a><br>
+                    <span class="muted">8 Sept 2025; revised 1 May 2026 (v5) · <a href="https://sp2026.ieee-security.org/accepted-papers.html#:~:text=Parasites%20in%20the%20Toolchain">IEEE S&amp;P 2026</a></span></p>
+                    <p><strong>Attack enters through:</strong> retrieved pages or messages.<br>
+                    <strong>Test checks:</strong> did private data reach the attacker's destination?</p>
+                    <p>With Cursor Auto allowed to act without approval, <a href="https://arxiv.org/pdf/2509.06572v5#page=12&amp;zoom=100&amp;search=9%20of%2010&amp;phrase=true">9 of 10 tested tool combinations leaked data</a> at least once in ten tries each.</p>
+                  </td>
+                  <td>
+                    <p><strong>Yes, for GPT-5 and Sonnet 4.5:</strong>
+                    <a href="https://arxiv.org/pdf/2509.06572v5#page=13&amp;zoom=100&amp;search=GPT-5%20and%20Claude-4.5-Sonnet&amp;phrase=true">neither leaked data in 75 attempts each</a>.
+                    DeepSeek R1 and Gemini 2.5 Flash often did.</p>
+                    <p>This comparison used one tool combination and three versions of the attack,
+                    repeated across five apps. It shows these models held up in this test, not that they can stop every attack.</p>
+                  </td>
+                  <td>
+                    <p>The authors <a href="https://arxiv.org/pdf/2509.06572v5#page=14&amp;zoom=100&amp;search=Defense%20Mechanism&amp;phrase=true">recommend limiting what tools can read and send</a>,
+                    treating retrieved text as data rather than orders, and watching for suspicious sequences of actions.</p>
+                    <p><strong>They suggest these protections but don't test how well they work.</strong></p>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <p><a href="https://arxiv.org/pdf/2508.14925#page=1"><cite>MCPTox</cite></a><br>
+                    <span class="muted">19 Aug 2025 · <a href="https://ojs.aaai.org/index.php/AAAI/article/view/40895">AAAI 2026</a></span></p>
+                    <p><strong>Attack enters through:</strong> tool descriptions, placed in the system prompt.<br>
+                    <strong>Test checks:</strong> did the agent choose a harmful tool call or change its arguments?
+                    <a href="https://arxiv.org/pdf/2508.14925#page=5&amp;zoom=100&amp;search=LLM%20Agent%20Evaluation&amp;phrase=true">Method, pp. 5–6</a>.</p>
+                  </td>
+                  <td>
+                    <p><strong>Reasoning sometimes made things worse.</strong> For Qwen3-8B,
+                    turning it on raised attack success from
+                    <a href="https://arxiv.org/pdf/2508.14925#page=5&amp;zoom=100&amp;search=Table%202&amp;phrase=true">14.0% to 41.8%</a>.
+                    Rates count valid outputs only. Larger models weren't consistently safer or less safe.</p>
+                    <p>GPT-5 and Sonnet 4.5 weren't tested. This challenges “more capable means safer,”
+                    without overturning their results in the other paper.</p>
+                  </td>
+                  <td>
+                    <p><strong>No added defence was tested.</strong> The authors call for
+                    <a href="https://arxiv.org/pdf/2508.14925#page=7&amp;zoom=100&amp;search=pre-execution&amp;phrase=true">security checks before tools run</a>.</p>
+                    <p>Malicious instructions in one tool's description can trick the agent into misusing another tool,
+                    even if it never calls the tool containing those instructions.</p>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <ul>
+          <li>Newer models are much harder to fool through tool results, both in the labs and in
+            <a href="https://arxiv.org/pdf/2509.06572v5#page=13&amp;zoom=100&amp;search=GPT-5%20and%20Claude-4.5-Sonnet&amp;phrase=true">independent tests</a>.</li>
+          <li>Tool descriptions haven't been tested on today's frontier models, and GPT-5 was fooled
+            <a href="https://arxiv.org/pdf/2510.15994v2#page=9&amp;zoom=100&amp;search=GPT-5&amp;phrase=true">about half the time</a>.</li>
+          <li>The model is only one layer.
+            <a href="https://www.anthropic.com/claude-opus-5-5-system-card#page=88&amp;search=85.73%25&amp;phrase=true">Fallback routing</a>
+            and <a href="#agentbound">permissions</a> matter too.</li>
+        </ul>
+      </section>
+
+      <section id="outside-the-labs">
+        <h2 id="outside-the-labs-how-real-is-the-threat"><a class="heading-link" href="#outside-the-labs-how-real-is-the-threat">Outside the labs: how real is the threat?</a></h2>
+        <p>
+          The charts above use attacks written for a test. Two 2026 studies looked for injections people have
+          actually planted, which lets us ask: would today's models have stopped them?
+        </p>
+
+        <h3 id="on-the-open-web"><a class="heading-link" href="#on-the-open-web">On the open web</a></h3>
+
+        <div class="with-note">
+          <aside class="sidenote" aria-label="How this study differs from Gray Swan's tests">
+            <div class="sidenote-inner">
+              <div class="note method-note">
+                <p><strong>How this differs from Gray Swan's tests.</strong></p>
+                <ul>
+                  <li><strong>Attacks:</strong> real injections copied off web pages, one try each, not tuned attacks with 15 or 100 tries.</li>
+                  <li><strong>Task:</strong> summarize a page, with no tools to misuse
+                    (<a href="https://arxiv.org/pdf/2604.27202v1#page=10&amp;zoom=100&amp;search=The%20task&amp;phrase=true">p. 10</a>).</li>
+                  <li><strong>Models:</strong> 13, up to GPT-5.4; no Claude model
+                    (<a href="https://arxiv.org/pdf/2604.27202v1#page=16&amp;zoom=100&amp;search=Table%2011&amp;phrase=true">p. 16</a>).</li>
+                </ul>
+              </div>
+            </div>
+          </aside>
+
+          <p>
+            <a href="https://arxiv.org/pdf/2604.27202v1#page=1"><cite>Indirect Prompt Injection in the Wild</cite></a>
+            (CISPA, arXiv preprint) scanned 1.2 billion web addresses from an October 2025 Common Crawl snapshot,
+            plus Shodan and Censys. Most injections sit where only machines look, such as headers, comments and metadata,
+            and most reuse
+            <a href="https://arxiv.org/pdf/2604.27202v1#page=2&amp;zoom=100&amp;search=54%20prompt%20templates&amp;phrase=true">a small set of templates that tell the model to drop its task</a>.
+          </p>
+
+          <p>
+            Google ran <a href="https://blog.google/security/prompt-injections-web/">its own scan</a> of Common Crawl
+            and found the same thing. Injections are growing, but most are pranks and experiments, not the advanced
+            attacks researchers have published. Google reads that as a sign that attackers
+            <a href="https://blog.google/security/prompt-injections-web/#:~:text=attackers%20have%20yet%20not%20productionized">haven't put that research to use yet</a>.
+          </p>
+
+          <table class="stats compare-table">
+            <thead>
+              <tr><th scope="col"></th><th scope="col">CISPA (preprint)</th><th scope="col">Google (blog post)</th></tr>
+            </thead>
+            <tbody>
+              <tr><th scope="row">Searched</th><td>1.2B web addresses, Oct 2025 crawl, plus Shodan and Censys</td><td>Several Common Crawl snapshots, 2–3B pages each</td></tr>
+              <tr><th scope="row">Found</th><td>15.3K confirmed injections on 11.7K pages</td><td>A 32% relative rise in malicious injections, Nov 2025 → Feb 2026</td></tr>
+              <tr><th scope="row">How advanced?</th><td>Mostly reused templates that tell the model to drop its task</td><td>Mostly pranks and experiments; little advanced work</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3 id="would-today-s-models-have-stopped-them-mostly"><a class="heading-link" href="#would-today-s-models-have-stopped-them-mostly">Would today's models have stopped them? Mostly</a></h3>
+
+        <p>
+          The CISPA team took 100 of these real injections and tried them on 13 models. The small models were
+          fooled the most. GPT-5.4, the newest model they tested, was almost never fooled.
+        </p>
+
+        <figure>
+          <div class="annotated-chart cispa-chart">
+            <img src="../../images/cispa-fig7-per-model.png" width="925" height="750"
+                 alt="Per-model chart from the CISPA study. Red dots show attack success, grey dots errors, green dots how often the model flagged the injection. Circled: LFM-2 2.6B, a small model, is fooled about 11% of the time; GPT-5.4 is fooled about 0% of the time.">
+            <svg class="chart-circles" viewBox="0 0 925 750" aria-hidden="true" focusable="false">
+              <ellipse cx="397" cy="46" rx="34" ry="20" />
+              <ellipse cx="392" cy="658" rx="252" ry="30" />
+            </svg>
+          </div>
+          <figcaption><a href="https://arxiv.org/pdf/2604.27202v1#page=16&amp;zoom=100&amp;search=Figure%207&amp;phrase=true">Figure 7, p. 16</a>. Red dots show attack success; lower is better. Circles highlight a small model (LFM-2 2.6B) and GPT-5.4.</figcaption>
+        </figure>
+
+        <p>
+          That's the same GPT-5.4 that Gray Swan fooled about 1 time in 3 in April. The difference is the attacker:
+          Gray Swan's red-teamers tune their attacks and get 100 tries, while a web injection is a fixed template
+          with one shot. Anthropic says as much: <q>simple attacks do not succeed anymore</q>
+          (<a href="https://www.anthropic.com/claude-opus-5-5-system-card#page=123&amp;search=simple%20attacks%20do%20not%20succeed%20anymore&amp;phrase=true">Opus 5.5 System Card, p. 123</a>).
+          For now, the lab tests are the harder bar. Two caveats: some models
+          <a href="https://arxiv.org/pdf/2604.27202v1#page=11&amp;zoom=100&amp;search=six%20cases&amp;phrase=true">spotted an injection and followed it anyway</a>,
+          and the authors expect attacks to become
+          <a href="https://arxiv.org/pdf/2604.27202v1#page=12&amp;zoom=100&amp;search=Static%20Today&amp;phrase=true">more adaptive and targeted</a>.
+        </p>
+
+        <h3 id="what-about-targeted-attacks-that-never-touch-the-web"><a class="heading-link" href="#what-about-targeted-attacks-that-never-touch-the-web">What about targeted attacks that never touch the web?</a></h3>
+
+        <p>
+          Most software doesn't read the open web, but anything a user can supply still reaches the model.
+          <a href="https://www.usenix.org/system/files/usenixsecurity26-zhang-mohan.pdf#page=2"><cite>Measuring Real-World Prompt Injection Attacks in LLM-based Resume Screening</cite></a>
+          (<a href="https://www.usenix.org/conference/usenixsecurity26/presentation/zhang-mohan">USENIX Security 2026</a>)
+          checked about 200,000 real resumes from a hiring platform.
+          <a href="https://www.usenix.org/system/files/usenixsecurity26-zhang-mohan.pdf#page=2&amp;search=approximately%201%25%20of%20resumes&amp;phrase=true">About 1% hid an injection</a>,
+          and <a href="https://www.usenix.org/system/files/usenixsecurity26-zhang-mohan.pdf#page=10&amp;search=absolute%20number%20of%20malicious%20resumes&amp;phrase=true">the number keeps rising</a>.
+          Most of them weren't instructions at all, and 9 in 10 were just hidden data, like invisible lists of skills meant to game keyword matching.
+        </p>
+
+        <figure>
+          <div class="annotated-chart resume-chart">
+            <img src="../../images/resume-fig7-injection-types.png" width="720" height="585"
+                 alt="Bar chart of injection types in the two resume datasets. Instruction injection: 9.5% and 4.3%. Data injection: 90.5% and 95.7%, circled.">
+            <svg class="chart-circles" viewBox="0 0 720 585" aria-hidden="true" focusable="false">
+              <ellipse cx="568" cy="42" rx="130" ry="50" />
+            </svg>
+          </div>
+          <figcaption><a href="https://www.usenix.org/system/files/usenixsecurity26-zhang-mohan.pdf#page=11&amp;search=Figure%207&amp;phrase=true">Figure 7, p. 1436</a>, injection types in the two datasets. Circle added: hidden data.</figcaption>
+        </figure>
+
+        <p>
+          The paper <a href="https://www.usenix.org/system/files/usenixsecurity26-zhang-mohan.pdf#page=15&amp;search=does%20not%20assess&amp;phrase=true">didn't test whether these worked</a>.
+        </p>
+
+        <div class="callout">
+          <p class="callout-label">Takeaway</p>
+          <p>
+            Real injections are out there and growing, but for now they're crude, and frontier models mostly
+            ignore them. Your software doesn't need to browse the web to be exposed.
+          </p>
+        </div>
+      </section>
+
+      <section id="real-attackers">
+        <h2 id="so-have-real-attackers-used-it-yet"><a class="heading-link" href="#so-have-real-attackers-used-it-yet">So, have real attackers used it yet?</a></h2>
+
+        <div class="with-note">
+          <aside class="sidenote" aria-label="What these reports are">
+            <div class="sidenote-inner">
+              <div class="note method-note">
+                <p><strong>What these reports are.</strong></p>
+                <ul>
+                  <li><strong>Source:</strong> threat reports, not peer-reviewed papers. Each company describes
+                    attacks it caught on its own platforms.</li>
+                  <li><strong>Missing:</strong> which model was fooled, and how many tries it took. So these
+                    can't be compared with the lab charts.</li>
+                </ul>
+              </div>
+            </div>
+          </aside>
+
+          <p>
+            <strong>Yes.</strong> Two reports from September 2026, one from
+            <a href="https://www.anthropic.com/threat-intelligence-report-september-2026">Anthropic</a> and one from
+            <a href="https://cloud.google.com/blog/topics/threat-intelligence/from-prompting-to-autonomy-the-evolution-of-adversarial-ai">Google's threat intelligence team</a> (GTIG), describe criminals using prompt injection
+            against real companies. Every group they name was after money. Neither report shows government hackers
+            doing it.
+          </p>
+
+          <h3 id="who-used-it-and-for-what"><a class="heading-link" href="#who-used-it-and-for-what">Who used it, and for what</a></h3>
+
+          <table class="stats compare-table attackers-table">
+            <thead>
+              <tr><th scope="col">Attacker</th><th scope="col">When</th><th scope="col">What they did</th><th scope="col">What they got or wanted</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th scope="row">GTG-50020<br><span class="muted">Anthropic · Russian-speaking criminals</span></th>
+                <td>Dec 2025 – Aug 2026 <span class="muted">(no exact date)</span>; reported
+                  <a href="https://www-cdn.anthropic.com/e50be2e51e7695dc4b1366a37a245a597377d3b5/Anthropic-Detecting-and-countering-091026.pdf#page=1">10 Sep 2026</a></td>
+                <td>
+                  <a href="https://www-cdn.anthropic.com/e50be2e51e7695dc4b1366a37a245a597377d3b5/Anthropic-Detecting-and-countering-091026.pdf#page=30&amp;search=injecting%20malicious%20instructions&amp;phrase=true">Slipped instructions</a>
+                  into an AI company's automated testing sandbox, which then handed over the keys it held.
+                </td>
+                <td>
+                  The company's live AI API keys. They then
+                  <a href="https://www-cdn.anthropic.com/e50be2e51e7695dc4b1366a37a245a597377d3b5/Anthropic-Detecting-and-countering-091026.pdf#page=31&amp;search=roughly%20thirty%20AI%20companies&amp;phrase=true">went after about 30 AI companies in four days</a>,
+                  trying to reach an unreleased Claude model. That failed, and Anthropic itself was never breached.
+                </td>
+              </tr>
+              <tr>
+                <th scope="row">Several unnamed groups<br><span class="muted">Anthropic</span></th>
+                <td>Dec 2025 – Aug 2026 <span class="muted">(no exact date)</span>; reported
+                  <a href="https://www-cdn.anthropic.com/e50be2e51e7695dc4b1366a37a245a597377d3b5/Anthropic-Detecting-and-countering-091026.pdf#page=1">10 Sep 2026</a></td>
+                <td>
+                  <a href="https://www-cdn.anthropic.com/e50be2e51e7695dc4b1366a37a245a597377d3b5/Anthropic-Detecting-and-countering-091026.pdf#page=29&amp;search=used%20prompt%20injection%20to%20exfiltrate&amp;phrase=true">Used prompt injection</a>
+                  on AI apps built on LiteLLM, a popular tool for connecting to AI models.
+                </td>
+                <td>
+                  The apps' live API keys. Anthropic lists this
+                  <a href="https://www-cdn.anthropic.com/e50be2e51e7695dc4b1366a37a245a597377d3b5/Anthropic-Detecting-and-countering-091026.pdf#page=12&amp;search=prompt%20injection%20of%20LiteLLM&amp;phrase=true">among common criminal attacks</a>.
+                </td>
+              </tr>
+              <tr>
+                <th scope="row">UNC6780 (TeamPCP)<br><span class="muted">GTIG · criminals</span></th>
+                <td>Active <a href="https://cloud.google.com/blog/topics/threat-intelligence/from-prompting-to-autonomy-the-evolution-of-adversarial-ai#:~:text=Since%20March%202026">since March 2026</a>
+                  <span class="muted">(no date for the injection tricks)</span>; reported 8 Sep 2026</td>
+                <td>
+                  Poisoned popular code packages, then hid instructions in project folders
+                  (<code>.claude/</code>, <code>.vscode/</code>, <code>.cursor/</code>) that
+                  <a href="https://cloud.google.com/blog/topics/threat-intelligence/from-prompting-to-autonomy-the-evolution-of-adversarial-ai#:~:text=Behavioral%20Manipulation%20through%20Prompt%20Injection">told coding assistants to run the attacker's scripts</a>.
+                </td>
+                <td>
+                  Passwords and keys, which they sold or passed to extortion gangs. In one case, a gang
+                  <a href="https://cloud.google.com/blog/topics/threat-intelligence/from-prompting-to-autonomy-the-evolution-of-adversarial-ai#:~:text=exfiltrated%20a%20copy%20of%20this%20AI%20repository">took a copy of a company's private AI code</a>.
+                </td>
+              </tr>
+            </tbody>
+          </table>
+
+          <p>
+            TeamPCP also used it against defenders. Its malware starts with fake "SYSTEM OVERRIDE" text asking for
+            weapons instructions,
+            <a href="https://cloud.google.com/blog/topics/threat-intelligence/from-prompting-to-autonomy-the-evolution-of-adversarial-ai#:~:text=Prompt%20Injection%20to%20Defeat%20LLM%20Security%20Scanners">likely so AI security scanners refuse to read on</a>
+            and miss the malicious code below.
+          </p>
+        </div>
+      </section>
+
+      <section id="conclusion">
+        <h2 id="conclusion-is-indirect-prompt-injection-still-a-threat"><a class="heading-link" href="#conclusion-is-indirect-prompt-injection-still-a-threat">Conclusion: is indirect prompt injection still a threat?</a></h2>
+
+        <p>
+          <strong>Not much against the newest models, at least with today's attacks.</strong> That could change if
+          someone finds a new kind of attack. It's still a real threat with other labs' models
+          (<a href="https://deploymentsafety.openai.com/gpt-6-astra#prompt-injection">fooled 24–60% of the time</a>),
+          when a request <a href="#go-to-model">falls back to a weaker model</a>, and when the agent can reach
+          <a href="#real-attackers">keys and passwords</a>.
+        </p>
+
+        <p>
+          Simple attacks mostly fail now. In Anthropic's words,
+          <q>simple attacks do not succeed anymore</q>
+          (<a href="https://www.anthropic.com/claude-opus-5-5-system-card#page=123&amp;search=simple%20attacks%20do%20not%20succeed%20anymore&amp;phrase=true">p. 123</a>).
+          But attackers who keep trying still get through. In Microsoft's LLMail-Inject challenge,
+          <a href="https://arxiv.org/pdf/2506.09956v1#page=7&amp;search=stacking%20all%20defenses&amp;phrase=true">16.6% of teams</a>
+          beat every defence stacked together. Nasr, Carlini and others broke
+          <a href="https://arxiv.org/pdf/2510.09023v1#page=1&amp;search=above%2090%25%20for%20most&amp;phrase=true">12 published defences, most over 90% of the time</a>.
+          And in Gray Swan's competition, attackers kept breaking every model at a steady rate; the authors say even
+          the more robust models <q>remain susceptible under sustained adversarial pressure</q>
+          (<a href="https://arxiv.org/pdf/2603.15714v1#page=9&amp;search=remain%20susceptible%20under%20sustained%20adversarial%20pressure&amp;phrase=true">p. 9</a>).
+        </p>
+
+        <p>
+          All of this was on older models. On the newest ones, only the labs' own tests exist so far
+          (<a href="https://www.anthropic.com/claude-opus-5-5-system-card#page=88&amp;search=none%20of%20the%202%2C872&amp;phrase=true">Opus 5.5</a>,
+          <a href="https://deploymentsafety.openai.com/gpt-6-astra#prompt-injection">GPT-6 Astra</a>), and they rarely got through.
+        </p>
+      </section>
+
+      <p>Hope this helped</p>
+
+      <p>-- End</p>
+</div>

@@ -1,0 +1,417 @@
+// Custom content components inside the standard Cactus post layout.
+@import "colors/{{ site.Params.colortheme | default "white" }}";
+
+article .content .prompt-injection {
+  // Preserve the original HTML design inside the theme's post shell.
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 18px;
+  line-height: 1.65;
+  overflow-wrap: break-word;
+
+  h2 {
+    margin: 2.5em 0 0.8em;
+    font-size: 1.4em;
+    line-height: 1.25;
+  }
+
+  h2::before {
+    content: none;
+  }
+
+  section:first-of-type h2 {
+    margin-top: 0;
+  }
+
+  h3 {
+    margin: 2.6em 0 0.6em;
+    font-size: 1.15em;
+  }
+
+  p {
+    margin: 0 0 1.1em;
+    // Cactus justifies paragraphs on desktop, creating large word gaps
+    // in table cells and sidenotes. Keep the original HTML's alignment.
+    text-align: left;
+    hyphens: manual;
+  }
+
+  a {
+    color: $color-accent-1;
+    background-image: none;
+    text-decoration: underline;
+    text-decoration-color: rgba($color-accent-1, 0.35);
+    text-underline-offset: 2px;
+  }
+
+  a:hover {
+    background-image: none;
+    text-decoration-color: currentColor;
+  }
+
+  h2[id], h3[id] {
+    scroll-margin-top: 24px;
+  }
+
+  a.heading-link {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  a.heading-link:hover,
+  a.heading-link:focus-visible {
+    text-decoration: underline;
+    text-decoration-color: $color-accent-1;
+  }
+
+  figure {
+    margin: 1.2em 0 1em;
+  }
+
+  figure img {
+    display: block;
+    width: 100%;
+    height: auto;
+    border: 1px solid $color-border;
+  }
+
+  figcaption {
+    margin-top: 0.5em;
+    font-size: 0.8em;
+    color: mix($color-text, $color-background, 75%);
+  }
+
+  .annotated-chart {
+    position: relative;
+    margin: 0 auto;
+  }
+
+  .reasoning-chart { max-width: 600px; }
+  .size-chart { max-width: 580px; }
+
+  .annotated-chart img {
+    border: 0;
+  }
+
+  .chart-circles {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    fill: none;
+    stroke: #b52323;
+    stroke-width: 3;
+    overflow: visible;
+  }
+
+  .backbones-figure .chart-legend {
+    width: 100%;
+    max-width: 320px;
+    margin: 0.5em auto;
+    border: 0;
+  }
+
+  /* Key numbers under each chart */
+  table.stats {
+    // Cactus uses display:block for tables; native table layout preserves
+    // the original column widths and full-width row highlights.
+    display: table;
+    overflow: visible;
+    width: 100%;
+    border-collapse: collapse;
+    margin: 0 0 1.2em;
+    font-size: 0.9em;
+  }
+
+  table.stats th,
+  table.stats td {
+    padding: 0.35em 0.5em;
+    border-bottom: 1px solid $color-border;
+    text-align: left;
+  }
+
+  table.stats th {
+    font-weight: normal;
+    color: mix($color-text, $color-background, 75%);
+    font-size: 0.9em;
+  }
+
+  table.stats .num {
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+  }
+
+  table.stats .muted {
+    color: mix($color-text, $color-background, 75%);
+    font-size: 0.85em;
+  }
+
+  table.trend td:last-child {
+    font-weight: bold;
+    color: $color-accent-1;
+  }
+
+  table.stats tr.ref td {
+    color: mix($color-text, $color-background, 75%);
+  }
+
+  table.stats tr.best td {
+    font-weight: bold;
+    background: mix($color-accent-1, $color-background, 10%);
+  }
+
+  .note {
+    background: $color-background-code;
+    padding: 0.9em 1.1em;
+    border-radius: 4px;
+    font-size: 0.95em;
+  }
+
+  .part-start {
+    margin-top: 2.2em;
+  }
+
+  .ask {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  .findings li {
+    margin-bottom: 1.1em;
+  }
+
+  .why {
+    margin: 1.5em 0;
+  }
+
+  @media (min-width: 1280px) {
+    .sidenote .why {
+      margin: 0;
+      font-size: 0.8em;
+    }
+  }
+
+  .why p {
+    margin: 0 0 0.5em;
+  }
+
+  .why ul {
+    margin: 0;
+    padding-left: 1.2em;
+  }
+
+  .why li {
+    margin-bottom: 0.3em;
+  }
+
+  /* Takeaways and "My take": same text as the body, highlighted as a callout */
+  .callout {
+    margin: 1.8em 0;
+    padding: 1em 1.25em 1.1em;
+    background: mix($color-accent-1, $color-background, 10%);
+    border-left: 4px solid $color-accent-1;
+    border-radius: 0 6px 6px 0;
+  }
+
+  .callout p {
+    margin: 0 0 0.6em;
+  }
+
+  .callout p:last-child,
+  .callout ul:last-child {
+    margin-bottom: 0;
+  }
+
+  .callout .callout-label {
+    margin: 0 0 0.35em;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    font-size: 0.72em;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: $color-accent-1;
+  }
+
+  .callout ul {
+    margin: 0;
+    padding-left: 1.2em;
+  }
+
+  .callout li {
+    margin-bottom: 0.3em;
+  }
+
+  /* "How to read the charts" sits in the right margin on wide screens,
+     follows the reader down, and stops at the end of the charts. */
+  .with-note {
+    position: relative;
+  }
+
+  .sidenote .note {
+    margin: 0 0 1.5em;
+  }
+
+  @media (min-width: 1280px) {
+    .sidenote {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 100%;
+      width: 260px;
+      margin-left: 32px;
+    }
+
+    .sidenote-inner {
+      position: sticky;
+      top: 24px;
+    }
+
+    .sidenote .note {
+      margin: 0;
+      font-size: 0.8em;
+    }
+
+    .sidenote .note + .note {
+      margin-top: 1em;
+    }
+  }
+
+  table.research-table .research-category th {
+    background: $color-background-code;
+    color: $color-accent-3;
+    font-weight: bold;
+    font-size: 1em;
+  }
+
+  /* Column headings stay visible while the reader scrolls through the rows.
+     A scrolling wrapper would trap the sticky header inside it, so on screens
+     wide enough for the table the wrapper doesn't scroll and the header sticks
+     to the page. On narrow screens the wrapper scrolls both ways and the header
+     sticks to the top of the wrapper instead. */
+  .research-table-wrap {
+    overflow: visible;
+  }
+
+  table.research-table thead th {
+    position: sticky;
+    top: 0;
+    z-index: 2;
+    background: $color-background;
+    color: $color-accent-3;
+    font-weight: bold;
+    /* border-collapse borders don't travel with sticky cells; draw one instead */
+    box-shadow: inset 0 -2px 0 $color-border;
+  }
+
+  @media (max-width: 679px) {
+    .research-table-wrap {
+      overflow: auto;
+      max-height: 85vh;
+    }
+  }
+
+  table.research-table {
+    min-width: 0;
+    table-layout: fixed;
+    font-size: 0.85em;
+    line-height: 1.45;
+    overflow-wrap: anywhere;
+  }
+
+  table.research-table thead th:first-child {
+    width: 40%;
+  }
+
+  table.research-table thead th:not(:first-child) {
+    width: 30%;
+  }
+
+  table.research-table th,
+  table.research-table td {
+    vertical-align: top;
+    padding: 0.5em;
+  }
+
+  .research-table p {
+    margin-bottom: 0.55em;
+  }
+
+  .research-table p:last-child {
+    margin-bottom: 0;
+  }
+
+  /* Methodology differences under the Backbones chart */
+  .method-note {
+    margin: 0 0 1.5em;
+  }
+
+  .method-note p {
+    margin: 0 0 0.5em;
+  }
+
+  .method-note ul {
+    margin: 0;
+    padding-left: 1.2em;
+  }
+
+  .method-note li {
+    margin-bottom: 0.3em;
+  }
+
+  /* Short answer under the title */
+  .short-answer {
+    margin-top: 0;
+    margin-bottom: 2.5em;
+  }
+
+  .short-answer li {
+    margin-bottom: 0.6em;
+  }
+
+  .short-answer li a {
+    white-space: nowrap;
+    font-size: 0.9em;
+  }
+
+  .short-answer li a::before {
+    content: "→ ";
+  }
+
+  /* Lab tests vs MCP studies, at the start of the MCP section */
+  table.compare-table {
+    line-height: 1.45;
+  }
+
+  table.compare-table th[scope="row"] {
+    color: $color-accent-3;
+    font-weight: bold;
+    width: 22%;
+    vertical-align: top;
+  }
+
+  table.compare-table td {
+    vertical-align: top;
+    width: 39%;
+  }
+
+  /* "Outside the labs" charts */
+  .cispa-chart { max-width: 560px; }
+  .resume-chart { max-width: 420px; }
+
+  /* Verdict summary table */
+  table.verdict-table th[scope="row"] { width: 28%; }
+  table.verdict-table td { width: 36%; }
+
+
+  /* Lakera vs Gray Swan comparison */
+  table.bench-compare th[scope="row"] { width: 30%; }
+  table.bench-compare td { width: 27%; }
+  table.bench-compare td:last-child { width: 16%; }
+
+  .grayswan-chart { max-width: 620px; }
+
+  /* "Who used it" table with a When column */
+  table.attackers-table th[scope="row"] { width: 20%; }
+  table.attackers-table td { width: 30%; }
+  table.attackers-table td:nth-of-type(1) { width: 20%; }
+}
