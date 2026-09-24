@@ -54,14 +54,14 @@ weight = 4
     lineNos = true
     lineNumbersInTable = false
     noClasses = true
-    style = "dark"
+    style = "github"
     tabWidth = 4
   [markup.goldmark.renderer] 
     unsafe= true
 
 [params]
 
-  colortheme = "dark"# white, light, white, or classic
+  colortheme = "white" # terracotta, white, light, dark, or classic
   rss = true # generate rss feed. default value is false
   googleAnalyticsAsync = false # use asynchronous tracking. Synchronous tracking by default
   showAllPostsArchive = false # default

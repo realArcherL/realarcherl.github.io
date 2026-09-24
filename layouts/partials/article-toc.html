@@ -1,0 +1,17 @@
+{{- if .Params.customArticle -}}
+  {{- /* HTML content does not populate Hugo's Markdown table of contents. */ -}}
+  {{- $headings := findRE `(?s)<h2\b[^>]*\bid="[^"]+"[^>]*>.*?</h2>` .Content -}}
+  {{- with $headings -}}
+  <nav id="TableOfContents" aria-label="Table of contents">
+    <ul>
+      {{- range . -}}
+        {{- $id := replaceRE `(?s)^<h2\b[^>]*\bid="([^"]+)"[^>]*>.*$` "$1" . -}}
+        {{- $label := . | plainify | htmlUnescape -}}
+        <li><a href="#{{ $id }}">{{ $label }}</a></li>
+      {{- end -}}
+    </ul>
+  </nav>
+  {{- end -}}
+{{- else -}}
+  {{ .TableOfContents }}
+{{- end -}}

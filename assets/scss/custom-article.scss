@@ -167,15 +167,6 @@ article .content .prompt-injection {
     font-size: 0.95em;
   }
 
-  .part-start {
-    margin-top: 2.2em;
-  }
-
-  .ask {
-    text-decoration: underline;
-    text-underline-offset: 3px;
-  }
-
   .findings li {
     margin-bottom: 1.1em;
   }
@@ -283,15 +274,7 @@ article .content .prompt-injection {
     font-size: 1em;
   }
 
-  /* Column headings stay visible while the reader scrolls through the rows.
-     A scrolling wrapper would trap the sticky header inside it, so on screens
-     wide enough for the table the wrapper doesn't scroll and the header sticks
-     to the page. On narrow screens the wrapper scrolls both ways and the header
-     sticks to the top of the wrapper instead. */
-  .research-table-wrap {
-    overflow: visible;
-  }
-
+  // Headers stick to the page on desktop, and to the scroll region on mobile.
   table.research-table thead th {
     position: sticky;
     top: 0;
@@ -311,7 +294,6 @@ article .content .prompt-injection {
   }
 
   table.research-table {
-    min-width: 0;
     table-layout: fixed;
     font-size: 0.85em;
     line-height: 1.45;
@@ -397,11 +379,6 @@ article .content .prompt-injection {
   /* "Outside the labs" charts */
   .cispa-chart { max-width: 560px; }
   .resume-chart { max-width: 420px; }
-
-  /* Verdict summary table */
-  table.verdict-table th[scope="row"] { width: 28%; }
-  table.verdict-table td { width: 36%; }
-
 
   /* Lakera vs Gray Swan comparison */
   table.bench-compare th[scope="row"] { width: 30%; }

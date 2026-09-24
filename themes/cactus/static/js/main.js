@@ -1,21 +1,10 @@
-/**
- * Sets up Justified Gallery.
- */
-if (!!$.prototype.justifiedGallery) {
-  var options = {
-    rowHeight: 140,
-    margins: 4,
-    lastRow: "justify"
-  };
-  $(".article-gallery").justifiedGallery(options);
-}
-
 $(document).ready(function() {
 
   /**
    * Shows the responsive navigation menu on mobile.
    */
-  $("#header > #nav > ul > .icon").click(function() {
+  $("#header > #nav > ul > .icon").click(function(event) {
+    event.preventDefault();
     $("#header > #nav > ul").toggleClass("responsive");
   });
 
@@ -56,13 +45,13 @@ $(document).ready(function() {
      */
     if (menu.length) {
       $(window).on("scroll", function() {
-        var topDistance = menu.offset().top;
+        var topDistance = window.scrollY;
 
         // hide only the navigation links on desktop
-        if (!nav.is(":visible") && topDistance < 50) {
-          nav.show();
-        } else if (nav.is(":visible") && topDistance > 100) {
-          nav.hide();
+        if (topDistance < 50) {
+          nav.removeClass("nav-scrolled");
+        } else if (topDistance > 100) {
+          nav.addClass("nav-scrolled");
         }
 
         // on tablet, hide the navigation icon as well and show a "scroll to top
@@ -82,15 +71,17 @@ $(document).ready(function() {
      * hide it again after scrolling downwards.
      */
     if ($( "#footer-post").length) {
-      var lastScrollTop = 0;
+      var lastScrollTop = window.scrollY;
       $(window).on("scroll", function() {
-        var topDistance = $(window).scrollTop();
+        var topDistance = Math.max(0, window.scrollY);
+        // Ignore small scroll movements so menus stay usable.
+        if (topDistance > 50 && Math.abs(topDistance - lastScrollTop) < 12) return;
 
         if (topDistance > lastScrollTop){
-          // downscroll -> show menu
+          // Scrolling down hides the mobile toolbar.
           $("#footer-post").hide();
         } else {
-          // upscroll -> hide menu
+          // Scrolling up reveals it.
           $("#footer-post").show();
         }
         lastScrollTop = topDistance;

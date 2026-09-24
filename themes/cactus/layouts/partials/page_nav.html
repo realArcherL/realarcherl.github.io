@@ -1,7 +1,7 @@
 <div id="header-post">
   <a id="menu-icon" href="#"><i class="fas fa-bars fa-lg"></i></a>
   <a id="menu-icon-tablet" href="#"><i class="fas fa-bars fa-lg"></i></a>
-  <a id="top-icon-tablet" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;" aria-label="Top of Page"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" onclick="window.scrollTo({ top: 0 }); return false;" style="display:none;" aria-label="Top of Page"><i class="fas fa-chevron-up fa-lg"></i></a>
   <span id="menu">
     <span id="nav">
       <ul>
@@ -28,7 +28,7 @@
         </li>
         {{ end }}
         <li>
-          <a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" aria-label="Top of Page">
+          <a class="icon" href="#" onclick="window.scrollTo({ top: 0 }); return false;" aria-label="Top of Page">
             <i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i>
           </a>
         </li>
@@ -48,9 +48,9 @@
       {{ .Scratch.Set "icon_class_name" ""}}
       {{ partial "share.html" . }}
     </div>
-    {{ if not .Site.Params.tocInline }}
+    {{ if and (not .Site.Params.tocInline) (not .Params.hideToc) }}
     <div id="toc">
-      {{ .TableOfContents }}
+      {{ partial "article-toc.html" . }}
     </div>
     {{ end }}
   </span>

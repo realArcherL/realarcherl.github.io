@@ -16,7 +16,8 @@ html {
   margin: 0;
   padding: 0;
   height: 100%;
-  border-top: 2px solid $color-text;
+  background-color: $color-background;
+  scrollbar-gutter: stable;
   -webkit-text-size-adjust: 100%;
   -ms-text-size-adjust: 100%;
 }
@@ -180,7 +181,7 @@ pre {
 
   .code-copy-btn:hover {
     background-color: #666;
-    color: #2bbc8a;
+    color: $color-accent-1;
   }
 
   code {
@@ -228,4 +229,11 @@ code {
       }
     }
   }
+}
+// Use native page transitions without intercepting links or browser history.
+@media (prefers-reduced-motion: no-preference) {
+  html { scroll-behavior: smooth; }
+  @view-transition { navigation: auto; }
+  ::view-transition-old(root),
+  ::view-transition-new(root) { animation-duration: 140ms; }
 }
