@@ -19,6 +19,8 @@ date: 2026-09-24
             <a href="#outside-the-labs">Outside the labs</a></li>
           <li>Criminals have started using it to steal API keys.
             <a href="#real-attackers">Real attackers</a></li>
+          <li>MCP adds ways in that the labs don't test. Tool descriptions fooled GPT-5 about half the time.
+            <a href="#safer-in-tool-responses-not-in-tool-descriptions">MCP</a></li>
           <li>Attackers who keep trying still win on older models. On the newest ones, only the labs' own tests exist
             so far, and they rarely got through.
             <a href="#conclusion">Conclusion</a></li>
@@ -30,6 +32,8 @@ date: 2026-09-24
             <a href="#ipi-mcp-environment">MCP studies</a></li>
           <li>Then compare which of those are safest. Right now, that looks like the Claude family.
             <a href="#go-to-model">Go-to model</a></li>
+          <li>If you use MCP, only connect servers you trust, and limit what each tool can read and send.
+            <a href="#conclusion">Conclusion</a></li>
         </ul>
       </div>
 
@@ -411,12 +415,12 @@ date: 2026-09-24
       </section>
 
       <section id="ipi-mcp-environment">
-        <h2 id="where-the-lab-numbers-stop-mcp"><a class="heading-link" href="#where-the-lab-numbers-stop-mcp">Where the lab numbers stop: MCP</a></h2>
+        <h2 id="mcp-more-ways-in-than-the-labs-test"><a class="heading-link" href="#mcp-more-ways-in-than-the-labs-test">MCP: more ways in than the labs test</a></h2>
         <p>The lab charts only test instructions hidden in the content an agent reads, like web pages, files
           and tool results. MCP gives attackers more ways in. They can hide instructions in a tool's description,
           pass them through tool arguments, or ship a server with malicious code. The studies below test these
           paths, but on older models like GPT-5 and Sonnet 4.5. So they don't show the lab numbers are wrong,
-          just where those numbers stop.</p>
+          just what the labs leave untested.</p>
 
         <div class="with-note">
           <aside class="sidenote" aria-label="Comparing research results">
@@ -571,15 +575,173 @@ date: 2026-09-24
           </div>
         </div>
 
-        <ul>
-          <li>Newer models are much harder to fool through tool results, both in the labs and in
-            <a href="https://arxiv.org/pdf/2509.06572v5#page=13&amp;zoom=100&amp;search=GPT-5%20and%20Claude-4.5-Sonnet&amp;phrase=true">independent tests</a>.</li>
-          <li>Tool descriptions haven't been tested on today's frontier models, and GPT-5 was fooled
-            <a href="https://arxiv.org/pdf/2510.15994v2#page=9&amp;zoom=100&amp;search=GPT-5&amp;phrase=true">about half the time</a>.</li>
-          <li>The model is only one layer.
-            <a href="https://www.anthropic.com/claude-opus-5-5-system-card#page=88&amp;search=85.73%25&amp;phrase=true">Fallback routing</a>
-            and <a href="#agentbound">permissions</a> matter too.</li>
-        </ul>
+        <h3 id="same-models-three-sets-of-results"><a class="heading-link" href="#same-models-three-sets-of-results">Same models, three sets of results</a></h3>
+
+        <p>
+          Older system cards from Anthropic and OpenAI tested some of the same models these studies used. They report
+          two kinds of results, the labs' own fixed tests and Gray Swan's red-team benchmark, so we can put all three
+          side by side.
+        </p>
+
+        <div class="research-table-wrap" role="region" aria-label="Lab, red-team and independent results for the same models" tabindex="0">
+        <table class="stats research-table">
+          <thead>
+            <tr>
+              <th scope="col">Model</th>
+              <th scope="col">Lab's own test</th>
+              <th scope="col">Gray Swan red-teamers, 10 tries (reported by the lab)</th>
+              <th scope="col">Independent MCP research</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th scope="row"><strong>Claude 3.7 Sonnet</strong><br><span class="muted">Released Feb 2025</span></th>
+              <td>Stopped 74% of injections
+                (<a href="https://www.anthropic.com/claude-3-7-sonnet-system-card#page=13&amp;search=compared%20to%2074%25%20with%20no%20mitigations&amp;phrase=true">3.7 card, p. 13</a>)<br><span class="muted">Feb 2025</span></td>
+              <td>Fooled in 64.5% of scenarios
+                (<a href="https://www.anthropic.com/claude-sonnet-4-5-system-card#page=29&amp;search=Agent%20Red%20Teaming%20(ART)%20benchmark%20measuring&amp;phrase=true">Sonnet 4.5 card, p. 28</a>)<br><span class="muted">Sep 2025</span></td>
+              <td>Fooled by poisoned tool descriptions 34% of the time
+                (<a href="https://ojs.aaai.org/index.php/AAAI/article/view/40895">MCPTox, Table 2</a>)<br><span class="muted">Aug 2025</span></td>
+            </tr>
+            <tr>
+              <th scope="row"><strong>Claude Sonnet 4</strong><br><span class="muted">Released May 2025</span></th>
+              <td>Stopped 91% in its MCP test
+                (<a href="https://www.anthropic.com/claude-sonnet-4-5-system-card#page=30&amp;search=Model%20Context%20Protocol%20(MCP)%20evaluation&amp;phrase=true">Sonnet 4.5 card, p. 29</a>)<br><span class="muted">Sep 2025</span></td>
+              <td>Fooled in 65.5% of scenarios
+                (<a href="https://www.anthropic.com/claude-sonnet-4-5-system-card#page=29&amp;search=Agent%20Red%20Teaming%20(ART)%20benchmark%20measuring&amp;phrase=true">Sonnet 4.5 card, p. 28</a>)<br><span class="muted">Sep 2025</span></td>
+              <td>Fooled 40–67% of the time, depending on where the attack hid*
+                (<a href="https://arxiv.org/pdf/2510.15994v2#page=9&amp;zoom=100&amp;search=Table%203&amp;phrase=true">MSB, Table 3</a>)<br><span class="muted">Mar 2026</span></td>
+            </tr>
+            <tr>
+              <th scope="row"><strong>Claude Sonnet 4.5</strong><br><span class="muted">Released Sep 2025</span></th>
+              <td>Stopped 92% in its MCP test
+                (<a href="https://www.anthropic.com/claude-sonnet-4-5-system-card#page=30&amp;search=Model%20Context%20Protocol%20(MCP)%20evaluation&amp;phrase=true">Sonnet 4.5 card, p. 29</a>)<br><span class="muted">Sep 2025</span></td>
+              <td>Fooled in 53.6% of scenarios
+                (<a href="https://www.anthropic.com/claude-sonnet-4-5-system-card#page=29&amp;search=Agent%20Red%20Teaming%20(ART)%20benchmark%20measuring&amp;phrase=true">Sonnet 4.5 card, p. 28</a>)<br><span class="muted">Sep 2025</span></td>
+              <td>Leaked nothing in 75 tries
+                (<a href="https://arxiv.org/pdf/2509.06572v5#page=13&amp;zoom=100&amp;search=GPT-5%20and%20Claude-4.5-Sonnet&amp;phrase=true">Parasites</a>)<br><span class="muted">May 2026</span></td>
+            </tr>
+            <tr>
+              <th scope="row"><strong>GPT-5</strong><br><span class="muted">Released Aug 2025</span></th>
+              <td>Resisted 99% of injections in tool outputs
+                (<a href="https://cdn.openai.com/gpt-5-system-card.pdf#page=12&amp;search=Tool%20calling%20prompt%20injections&amp;phrase=true">GPT-5 card, p. 11</a>)<br><span class="muted">Aug 2025</span></td>
+              <td>Fooled in 56.8% of scenarios
+                (<a href="https://cdn.openai.com/gpt-5-system-card.pdf#page=22&amp;search=Figure%208&amp;phrase=true">GPT-5 card, p. 21</a>)<br><span class="muted">Aug 2025</span></td>
+              <td>Held up against fake tool responses, but fooled through tool descriptions 49% of the time
+                (<a href="https://arxiv.org/pdf/2510.15994v2#page=9&amp;zoom=100&amp;search=Table%203&amp;phrase=true">MSB, Table 3</a>)<br><span class="muted">Mar 2026</span>
+                <br>Leaked nothing in 75 tries (<a href="https://arxiv.org/pdf/2509.06572v5#page=13&amp;zoom=100&amp;search=GPT-5%20and%20Claude-4.5-Sonnet&amp;phrase=true">Parasites</a>)<br><span class="muted">May 2026</span></td>
+            </tr>
+          </tbody>
+        </table>
+        </div>
+
+        <p><small>Dates are when each result was published. For the MSB and Parasites papers, that's the
+          version the numbers come from. * Across MSB's injections in tool descriptions, tool responses and retrieved
+          content, leaving out a test that only asks for the model's name. Gray Swan later re-graded its benchmark, so
+          newer cards show lower numbers for the same models. These are the earliest published figures.</small></p>
+
+        <p>
+          The labs publish both kinds of numbers, often in the same report. Their own fixed tests stopped most
+          injections. Gray Swan's red-teamers, given 10 tries, got through more than half the time on every one of
+          these models.
+        </p>
+
+        <p>
+          The independent MCP studies land in between, and where the attack hides decides the result. GPT-5 held up
+          against fake tool responses, just as OpenAI reported, but tool descriptions fooled it about half the time.
+        </p>
+
+        <p>
+          The labs' own tougher tests agree. Once attackers could adapt,
+          <a href="https://www.anthropic.com/claude-opus-4-5-system-card#page=61&amp;search=Shade%20indirect%20prompt%20injection&amp;phrase=true">Sonnet 4.5</a> and
+          <a href="https://deploymentsafety.openai.com/gpt-5-6/prompt-injection">GPT-5.4</a> were fooled far more often. As Anthropic puts it, fixed tests
+          <q>can provide a false sense of security</q>
+          (<a href="https://www.anthropic.com/claude-opus-4-5-system-card#page=60&amp;search=false%20sense%20of%20security&amp;phrase=true">Opus 4.5 card, p. 60</a>).
+          The headline lab numbers are the best case, not the worst.
+        </p>
+
+        <h3 id="safer-in-tool-responses-not-in-tool-descriptions"><a class="heading-link" href="#safer-in-tool-responses-not-in-tool-descriptions">Safer in tool responses, not in tool descriptions</a></h3>
+
+        <p>
+          Splitting the same results by where the attack hid makes the pattern clearer. Each number is the share of
+          attacks that worked, so lower is better.
+        </p>
+
+        <div class="research-table-wrap" role="region" aria-label="Lab and independent results for the same models" tabindex="0">
+        <table class="stats research-table">
+          <thead>
+            <tr>
+              <th scope="col">Model</th>
+              <th scope="col">Lab's own test</th>
+              <th scope="col">Fake tool responses</th>
+              <th scope="col">Retrieved content</th>
+              <th scope="col">Tool descriptions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th scope="row">Claude 3.7 Sonnet</th>
+              <td class="num"><a href="https://www.anthropic.com/claude-3-7-sonnet-system-card#page=13&amp;search=compared%20to%2074%25%20with%20no%20mitigations&amp;phrase=true">26%</a></td>
+              <td class="num"><span class="muted">not tested</span></td>
+              <td class="num"><span class="muted">not tested</span></td>
+              <td class="num"><a href="https://ojs.aaai.org/index.php/AAAI/article/view/40895">34%</a></td>
+            </tr>
+            <tr>
+              <th scope="row">Claude Sonnet 4</th>
+              <td class="num"><a href="https://www.anthropic.com/claude-sonnet-4-5-system-card#page=30&amp;search=Model%20Context%20Protocol%20(MCP)%20evaluation&amp;phrase=true">9%</a></td>
+              <td class="num"><a href="https://arxiv.org/pdf/2510.15994v2#page=9&amp;zoom=100&amp;search=Table%203&amp;phrase=true">47–66%</a></td>
+              <td class="num"><a href="https://arxiv.org/pdf/2510.15994v2#page=9&amp;zoom=100&amp;search=Table%203&amp;phrase=true">40%</a></td>
+              <td class="num"><a href="https://arxiv.org/pdf/2510.15994v2#page=9&amp;zoom=100&amp;search=Table%203&amp;phrase=true">67%</a></td>
+            </tr>
+            <tr>
+              <th scope="row">Claude Sonnet 4.5</th>
+              <td class="num"><a href="https://www.anthropic.com/claude-sonnet-4-5-system-card#page=30&amp;search=Model%20Context%20Protocol%20(MCP)%20evaluation&amp;phrase=true">8%</a></td>
+              <td class="num"><span class="muted">not tested</span></td>
+              <td class="num"><a href="https://arxiv.org/pdf/2509.06572v5#page=13&amp;zoom=100&amp;search=GPT-5%20and%20Claude-4.5-Sonnet&amp;phrase=true">0 of 75</a></td>
+              <td class="num"><span class="muted">not tested</span></td>
+            </tr>
+            <tr>
+              <th scope="row">GPT-5</th>
+              <td class="num"><a href="https://cdn.openai.com/gpt-5-system-card.pdf#page=12&amp;search=Tool%20calling%20prompt%20injections&amp;phrase=true">1%</a></td>
+              <td class="num"><a href="https://arxiv.org/pdf/2510.15994v2#page=9&amp;zoom=100&amp;search=Table%203&amp;phrase=true">0.3–1.3%</a></td>
+              <td class="num"><a href="https://arxiv.org/pdf/2510.15994v2#page=9&amp;zoom=100&amp;search=Table%203&amp;phrase=true">30%</a>, <a href="https://arxiv.org/pdf/2509.06572v5#page=13&amp;zoom=100&amp;search=GPT-5%20and%20Claude-4.5-Sonnet&amp;phrase=true">0 of 75</a></td>
+              <td class="num"><a href="https://arxiv.org/pdf/2510.15994v2#page=9&amp;zoom=100&amp;search=Table%203&amp;phrase=true">49%</a></td>
+            </tr>
+          </tbody>
+        </table>
+        </div>
+
+        <p>
+          GPT-5, the newest model here, shows the pattern most clearly. Fake tool responses almost never fooled it,
+          which matches OpenAI's own number. Instructions hidden in retrieved content worked 30% of the time in one
+          study, and instructions hidden in tool descriptions worked about half the time. Older models like Sonnet 4
+          were fooled through every path.
+        </p>
+
+        <p>
+          That lines up with what the labs say they train for. Anthropic defines prompt injection as
+          <a href="https://www.anthropic.com/claude-opus-5-5-system-card#page=123&amp;search=We%20define%20indirect%20prompt%20injections&amp;phrase=true">instructions that arrive through tool results</a>,
+          and OpenAI says it teaches its models
+          <q>to ignore prompt injections in web or connector contents</q>
+          (<a href="https://cdn.openai.com/gpt-5-system-card.pdf#page=11&amp;search=ignore%20prompt%20injections%20in%20web%20or%20connector%20contents&amp;phrase=true">GPT-5 card, p. 10</a>).
+          None of the system cards from either lab report testing tool descriptions. So tool responses are the safer
+          path, but attackers have other ways in, and nothing in the labs' reports shows even the newest models are
+          trained or tested against them.
+        </p>
+
+        <div class="callout">
+          <p class="callout-label">Takeaways</p>
+          <ul>
+            <li>Tool responses are the safer path. The newest models rarely fall for injections there, in the labs'
+              own tests and in <a href="https://arxiv.org/pdf/2509.06572v5#page=13&amp;zoom=100&amp;search=GPT-5%20and%20Claude-4.5-Sonnet&amp;phrase=true">some independent ones</a>.</li>
+            <li>Tool descriptions and retrieved content are not. GPT-5 was fooled
+              <a href="https://arxiv.org/pdf/2510.15994v2#page=9&amp;zoom=100&amp;search=GPT-5&amp;phrase=true">about half the time</a>
+              through tool descriptions, and no lab reports testing that path.</li>
+            <li>The model is only one layer.
+              <a href="https://www.anthropic.com/claude-opus-5-5-system-card#page=88&amp;search=85.73%25&amp;phrase=true">Fallback routing</a>
+              and <a href="#agentbound">permissions</a> matter too.</li>
+          </ul>
+        </div>
       </section>
 
       <section id="outside-the-labs">
@@ -814,6 +976,19 @@ date: 2026-09-24
           All of this was on older models. On the newest ones, only the labs' own tests exist so far
           (<a href="https://www.anthropic.com/claude-opus-5-5-system-card#page=88&amp;search=none%20of%20the%202%2C872&amp;phrase=true">Opus 5.5</a>,
           <a href="https://deploymentsafety.openai.com/gpt-6-astra#prompt-injection">GPT-6 Astra</a>), and they rarely got through.
+        </p>
+        <p>
+          MCP is where the picture is least settled. The labs train and test their models on instructions hidden in
+          tool results, and that's where the newest models hold up. But MCP gives attackers other ways in. Tool
+          descriptions fooled GPT-5 <a href="https://arxiv.org/pdf/2510.15994v2#page=9&amp;zoom=100&amp;search=GPT-5&amp;phrase=true">about half the time</a>, and
+          <a href="#safer-in-tool-responses-not-in-tool-descriptions">neither lab's system cards test that path</a>.
+          So when you connect an MCP server, you're trusting what its tools say about themselves, not just what they
+          return. The studies point to the same fixes. Limit what each tool can read and send
+          (<a href="https://arxiv.org/pdf/2509.06572v5#page=14&amp;zoom=100&amp;search=Defense%20Mechanism&amp;phrase=true">Parasites</a>),
+          check tool calls before they run
+          (<a href="https://arxiv.org/pdf/2508.14925#page=7&amp;zoom=100&amp;search=pre-execution&amp;phrase=true">MCPTox</a>),
+          and enforce permissions (<a href="#agentbound">AgentBound</a>), knowing they won't stop attacks that stay
+          inside what's allowed.
         </p>
       </section>
 

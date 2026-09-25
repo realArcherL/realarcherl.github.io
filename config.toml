@@ -61,7 +61,7 @@ weight = 4
 
 [params]
 
-  colortheme = "white" # terracotta, white, light, dark, or classic
+  colortheme = "green" # green, terracotta, white, light, dark, or classic
   rss = true # generate rss feed. default value is false
   googleAnalyticsAsync = false # use asynchronous tracking. Synchronous tracking by default
   showAllPostsArchive = false # default
