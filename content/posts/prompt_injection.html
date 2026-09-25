@@ -13,7 +13,7 @@ date: 2026-09-24
           Elsewhere, it's still a real threat.
         </p>
         <ul>
-          <li>Even with 15 tries, attackers beat Opus 5.5 about 1 time in 100. Other labs' models: 1 in 4 or worse.
+          <li>Even with 15 tries, attackers beat Opus 5.5 about 1 time in 100. The best from other labs: about 1 in 11 to 1 in 18. Many others: 1 in 4 or worse.
             <a href="#model-as-defence">Inside the labs</a></li>
           <li>Real attacks planted on the web are still crude and mostly fail.
             <a href="#outside-the-labs">Outside the labs</a></li>
@@ -182,9 +182,11 @@ date: 2026-09-24
         <h3 id="what-about-models-from-other-labs"><a class="heading-link" href="#what-about-models-from-other-labs">What about models from other labs?</a></h3>
 
         <p>
-          They're fooled far more often. In the same September test, six models from other labs were
-          fooled in <strong>24%</strong> to <strong>60%</strong> of scenarios. GPT-6 Astra was fooled in
-          <strong>8.5%</strong> and Claude Opus 5 in <strong>4.8%</strong>
+          It varies a lot. In the same September test, the best of them came close to Claude:
+          Gemini 3.8 Flash at <strong>5.5%</strong>
+          (<a href="https://www.anthropic.com/claude-opus-5-5-system-card#page=85&amp;zoom=100,0,513">Opus 5.5 card, p. 85</a>), GPT-6 Astra at <strong>8.5%</strong> and
+          Gemini 3.7 Flash at <strong>9.2%</strong>, against <strong>4.8%</strong> for Claude Opus 5.
+          But six others scored <strong>24%</strong> to <strong>60%</strong>
           (<a href="https://deploymentsafety.openai.com/gpt-6-astra#prompt-injection">GPT-6 Astra system card</a>).
         </p>
 
@@ -197,10 +199,10 @@ date: 2026-09-24
 
         <figure>
           <img src="../../images/september-gpt-6-astra-fig-5.png"
-               alt="Bar chart from the GPT-6 Astra system card of Gray Swan IPI benchmark results. Circled values within 15 tries: Muse Spark 1.2 24.2%, Qwen 3.8 28.6%, GLM-5.3 31.5%, Grok 4.6 51.8%, Kimi K3 52.7%, DeepSeek V4 Pro 60.1%. GPT-6 Astra is at 8.5% and Claude Opus 5 at 4.8%.">
+               alt="Bar chart from the GPT-6 Astra system card of Gray Swan IPI benchmark results. Circled values within 15 tries: Muse Spark 1.2 24.2%, Qwen 3.8 28.6%, GLM-5.3 31.5%, Grok 4.6 51.8%, Kimi K3 52.7%, DeepSeek V4 Pro 60.1%. Also in the chart: Gemini 3.7 Flash 9.2%, GPT-6 Astra 8.5% and Claude Opus 5 4.8%.">
           <figcaption>
             <a href="https://deploymentsafety.openai.com/gpt-6-astra#prompt-injection">GPT-6 Astra System Card</a>, Figure 5, printed p. 19.
-            Circles added: models from other labs, within 15 tries. † Not tested on computer use.
+            Circles added: the six weakest models from other labs, within 15 tries. † Not tested on computer use.
           </figcaption>
         </figure>
 
@@ -215,7 +217,9 @@ date: 2026-09-24
             <tr><td>Grok 4.6</td><td class="num">51.8%</td></tr>
             <tr><td>Kimi K3</td><td class="num">52.7%</td></tr>
             <tr><td>DeepSeek V4 Pro †</td><td class="num">60.1%</td></tr>
+            <tr class="ref"><td>Gemini 3.7 Flash <span class="muted">(for reference)</span></td><td class="num">9.2%</td></tr>
             <tr class="ref"><td>GPT-6 Astra <span class="muted">(for reference)</span></td><td class="num">8.5%</td></tr>
+            <tr class="ref"><td>Gemini 3.8 Flash <span class="muted">(for reference, <a href="https://www.anthropic.com/claude-opus-5-5-system-card#page=85&amp;zoom=100,0,513">Opus 5.5 card</a>)</span></td><td class="num">5.5%</td></tr>
             <tr class="ref"><td>Claude Opus 5 <span class="muted">(for reference)</span></td><td class="num">4.8%</td></tr>
           </tbody>
         </table>
@@ -559,7 +563,7 @@ date: 2026-09-24
                     <p><strong>Reasoning sometimes made things worse.</strong> For Qwen3-8B,
                     turning it on raised attack success from
                     <a href="https://arxiv.org/pdf/2508.14925#page=5&amp;zoom=100&amp;search=Table%202&amp;phrase=true">14.0% to 41.8%</a>.
-                    Rates count valid outputs only. Larger models weren't consistently safer or less safe.</p>
+                    Rates count valid outputs only. The authors conclude that more capable models, larger ones or those with reasoning on, are often <em>more</em> susceptible, though their Table 2 isn't consistent: Qwen3-14B (27.1%) did better than both 8B (41.8%) and 32B (58.5%).</p>
                     <p>GPT-5 and Sonnet 4.5 weren't tested. This challenges “more capable means safer,”
                     without overturning their results in the other paper.</p>
                   </td>
@@ -654,7 +658,10 @@ date: 2026-09-24
         <p>
           The labs' own tougher tests agree. Once attackers could adapt,
           <a href="https://www.anthropic.com/claude-opus-4-5-system-card#page=61&amp;search=Shade%20indirect%20prompt%20injection&amp;phrase=true">Sonnet 4.5</a> and
-          <a href="https://deploymentsafety.openai.com/gpt-5-6/prompt-injection">GPT-5.4</a> were fooled far more often. As Anthropic puts it, fixed tests
+          GPT-5.4 were fooled far more often. GPT-5.4 blocked 99.8% of OpenAI's fixed connector attacks
+          (<a href="https://deploymentsafety.openai.com/gpt-5-6/prompt-injection">GPT-5.6 card</a>) but only
+          93.954% from its automated red-teamer, GPT-Red
+          (<a href="https://deploymentsafety.openai.com/gpt-6-astra#prompt-injection">GPT-6 Astra card, Figure 4, printed p. 18</a>). As Anthropic puts it, fixed tests
           <q>can provide a false sense of security</q>
           (<a href="https://www.anthropic.com/claude-opus-4-5-system-card#page=60&amp;search=false%20sense%20of%20security&amp;phrase=true">Opus 4.5 card, p. 60</a>).
           The headline lab numbers are the best case, not the worst.
@@ -953,8 +960,8 @@ date: 2026-09-24
 
         <p>
           <strong>Not much against the newest models, at least with today's attacks.</strong> That could change if
-          someone finds a new kind of attack. It's still a real threat with other labs' models
-          (<a href="https://deploymentsafety.openai.com/gpt-6-astra#prompt-injection">fooled 24–60% of the time</a>),
+          someone finds a new kind of attack. It's still a real threat with many other labs' models
+          (<a href="https://deploymentsafety.openai.com/gpt-6-astra#prompt-injection">six were fooled 24–60% of the time</a>),
           when a request <a href="#go-to-model">falls back to a weaker model</a>, and when the agent can reach
           <a href="#real-attackers">keys and passwords</a>.
         </p>
